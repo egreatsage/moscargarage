@@ -1,8 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Moscar - Garage Booking System
+
+This is a comprehensive vehicle service and garage booking system built with [Next.js](https://nextjs.org), designed to streamline the process of scheduling and managing automotive services.
+
+## Features
+
+- **User Authentication:** Secure login and registration for both customers and administrators, with distinct roles and permissions.
+- **Service Management (Admin):** Admins can create, update, and manage the list of available services, including details like name, description, price, and duration.
+- **Service Viewing (Customer):** Customers can browse through the list of available services to choose what they need.
+- **Online Booking:** Customers can select a service, pick an available date and time slot, and book an appointment for their vehicle.
+- **Booking Management (Admin):**
+  - **View all bookings:** A comprehensive dashboard for admins to see all upcoming, in-progress, and completed bookings.
+  - **Update Status:** Change the status of a booking (e.g., from 'Confirmed' to 'In Progress').
+  - **Edit Bookings:** Modify booking details such as the date, time slot, and internal admin notes.
+  - **Cancel Bookings (Soft Delete):** Mark a booking as 'Cancelled' without permanently removing it from the records.
+  - **Permanent Deletion:** Admins have the ability to permanently delete booking records from the database.
+- **Payment Integration:** Supports M-Pesa STK push for seamless and secure online payments.
+- **Responsive UI:** A clean and modern user interface that works across devices.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+First, you'll need to set up your environment variables. Create a `.env.local` file in the root of the project and add the necessary keys for your database, authentication provider, and payment gateway.
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -10,15 +31,11 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a custom font for Vercel.
 
 ## Learn More
 
