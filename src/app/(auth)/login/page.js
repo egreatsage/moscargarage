@@ -47,7 +47,17 @@ export default function LoginPage() {
         toast.error(result.error);
       } else {
         toast.success('Logged in successfully!');
-        router.push('/dashboard');
+        if (session?.user?.role === 'staff') {
+        router.refresh(); // Ensure server components update
+        router.push('/staff/dashboard');
+      } else if (session?.user?.role === 'admin') {
+        router.refresh();
+        router.push('/admin/dashboard');
+      } else {
+        // Default for customers
+        router.refresh();
+        router.push('/profile'); 
+      }
         router.refresh();
       }
     } catch (err) {

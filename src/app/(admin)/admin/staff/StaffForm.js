@@ -160,7 +160,7 @@ export default function StaffForm({ staff: initialStaff = null }) {
           {/* Work Designation */}
             <div>
             <label htmlFor="workdesignation" className="block text-sm font-semibold text-slate-700 mb-2">
-              Work Designation <span className="text-orange-500">*</span>
+              Specialization <span className="text-orange-500">*</span>
             </label>
             <input 
                 type="text"
@@ -207,30 +207,6 @@ export default function StaffForm({ staff: initialStaff = null }) {
               </label>
             </div>
             <p className="mt-2 text-sm text-slate-500">PNG, JPG, GIF up to 10MB</p>
-          </div>
-
-          {/* Active Status */}
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input 
-                  type="checkbox" 
-                  name="isActive" 
-                  id="isActive" 
-                  checked={formData.isActive} 
-                  onChange={handleChange} 
-                  className="h-5 w-5 text-orange-600 border-slate-300 rounded focus:ring-orange-500 focus:ring-2"
-                />
-              </div>
-              <div className="ml-3">
-                <label htmlFor="isActive" className="font-semibold text-slate-900 cursor-pointer">
-                  Active Service
-                </label>
-                <p className="text-sm text-slate-600 mt-1">
-                  Make this service visible and bookable by customers
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

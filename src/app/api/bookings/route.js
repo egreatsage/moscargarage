@@ -31,8 +31,9 @@ export async function GET(request) {
     // If user is customer, only show their bookings
     if (session.user.role === 'customer') {
       query.user = session.user.id;
+    }else if (session.user.role === 'staff') {
+      query.staff = session.user.id;
     } else if (userId) {
-      // Admin can filter by userId
       query.user = userId;
     }
 
