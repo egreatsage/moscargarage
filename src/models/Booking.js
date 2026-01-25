@@ -18,11 +18,13 @@ const BookingSchema = new mongoose.Schema(
       ref: 'Service',
       required: [true, 'Service is required'],
     },
+  
     staff: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Staff',
-    required: [true, 'Staff assignment is required'], // System will auto-assign this
-  },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Staff',
+      required: [true, 'Staff assignment is required'],
+    },
+   
     bookingDate: {
       type: Date,
       required: [true, 'Booking date is required'],
@@ -30,29 +32,13 @@ const BookingSchema = new mongoose.Schema(
     timeSlot: {
       type: String,
       required: [true, 'Time slot is required'],
-      // Format: "09:00-11:00"
     },
     vehicle: {
-      make: {
-        type: String,
-        required: [true, 'Vehicle make is required'],
-      },
-      model: {
-        type: String,
-        required: [true, 'Vehicle model is required'],
-      },
-      year: {
-        type: Number,
-        required: [true, 'Vehicle year is required'],
-      },
-      registration: {
-        type: String,
-        required: [true, 'Vehicle registration is required'],
-      },
-      photo: {
-        type: String,
-        default: '',
-      },
+      make: { type: String, required: [true, 'Vehicle make is required'] },
+      model: { type: String, required: [true, 'Vehicle model is required'] },
+      year: { type: Number, required: [true, 'Vehicle year is required'] },
+      registration: { type: String, required: [true, 'Vehicle registration is required'] },
+      photo: { type: String, default: '' },
     },
     issueDescription: {
       type: String,
@@ -68,51 +54,26 @@ const BookingSchema = new mongoose.Schema(
       enum: ['pending', 'paid', 'failed', 'refunded'],
       default: 'pending',
     },
-    paymentReference: {
-      type: String,
-      default: '',
-    },
-    totalAmount: {
-      type: Number,
-      required: [true, 'Total amount is required'],
-    },
-    notes: {
-      type: String,
-      default: '',
-    },
-    adminNotes: {
-      type: String,
-      default: '',
-    },
-    cancelledAt: {
-      type: Date,
-    },
-    cancelledBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-    cancellationReason: {
-      type: String,
-      default: '',
-    },
-    completedAt: {
-      type: Date,
-    },
+    paymentReference: { type: String, default: '' },
+    totalAmount: { type: Number, required: [true, 'Total amount is required'] },
+    notes: { type: String, default: '' },
+    adminNotes: { type: String, default: '' },
+    cancelledAt: { type: Date },
+    cancelledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    cancellationReason: { type: String, default: '' },
+    completedAt: { type: Date },
   },
   {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  },
-  
+  }
 );
 
-// Virtual for booking 'id'
 BookingSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-// Index for faster queries
 BookingSchema.index({ user: 1, createdAt: -1 });
 BookingSchema.index({ bookingDate: 1, timeSlot: 1 });
 BookingSchema.index({ status: 1 });

@@ -5,149 +5,120 @@ import { authOptions } from '../../auth/[...nextauth]/route';
 import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import Payment from '@/models/Payment';
+import Service from '@/models/Service'; // Ensure Service is registered
+import User from '@/models/User';       // Ensure User is registered
+import Staff from '@/models/Staff'
 
 // GET a single booking by ID
 export async function GET(request, context) {
   const { id } = await context.params;
-  
   try {
     const session = await getServerSession(authOptions);
-    
     if (!session) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
     await connectDB();
 
+    // Populate service and its assignedStaff to let Admin see who else can do the job
     const booking = await Booking.findById(id)
       .populate('user', 'name email phone')
-      .populate('service', 'name price duration category image');
+      .populate({
+        path: 'service',
+        select: 'name price duration category assignedStaff', 
+        populate: {
+            path: 'assignedStaff.staffId',
+            select: 'name'
+        }
+      })
+      .populate('staff', 'name email phone'); // Populate current staff details
 
     if (!booking) {
-      return NextResponse.json(
-        { success: false, error: 'Booking not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
 
-    // Check if user has permission to view this booking
+    // Security: Customers can only view their own bookings
     if (session.user.role === 'customer' && booking.user._id.toString() !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden' },
-        { status: 403 }
-      );
+      return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    return NextResponse.json({
-      success: true,
-      data: booking,
-    });
+    return NextResponse.json({ success: true, data: booking });
   } catch (error) {
-    console.error(`Error fetching booking ${id}:`, error);
-    return NextResponse.json(
-      { success: false, error: 'Server error' },
-      { status: 500 }
-    );
+    console.error('Error fetching booking:', error);
+    return NextResponse.json({ success: false, error: 'Server error' }, { status: 500 });
   }
 }
 
 // PUT update a booking
 export async function PUT(request, context) {
   const { id } = await context.params;
-  
   try {
     const session = await getServerSession(authOptions);
-    
     if (!session) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
     await connectDB();
 
     const booking = await Booking.findById(id);
-
     if (!booking) {
-      return NextResponse.json(
-        { success: false, error: 'Booking not found' },
-        { status: 404 }
-      );
-    }
-
-    // Check permissions
-    const isOwner = booking.user.toString() === session.user.id;
-    const isAdmin = session.user.role === 'admin';
-
-    if (!isOwner && !isAdmin) {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden' },
-        { status: 403 }
-      );
+      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
 
     const body = await request.json();
+    const { 
+      status, 
+      notes, 
+      adminNotes, 
+      bookingDate, 
+      timeSlot,
+      staffId // <--- Capture the new Staff ID
+    } = body;
 
-    // Customers can only update certain fields
+    // --- Admin Only Updates ---
+    if (session.user.role === 'admin' || session.user.role === 'staff') {
+        if (status) {
+            booking.status = status;
+            if (status === 'completed') booking.completedAt = new Date();
+            // If cancelled, we might want to free up the staff (logic handled in double-booking check by ignoring cancelled)
+        }
+        if (adminNotes !== undefined) booking.adminNotes = adminNotes;
+        
+        // Allow Admin to change Date/Time
+        if (bookingDate) booking.bookingDate = new Date(bookingDate);
+        if (timeSlot) booking.timeSlot = timeSlot;
+
+        // 👇👇👇 RE-ASSIGN STAFF LOGIC 👇👇👇
+        if (staffId && staffId !== booking.staff?.toString()) {
+            // Optional: You could add a check here to ensure the new staff is qualified
+            // But for "Admin Power", we often allow overriding constraints.
+            booking.staff = staffId;
+        }
+    }
+
+    // --- Customer Updates (Restricted) ---
     if (session.user.role === 'customer') {
-      const { vehicle, issueDescription } = body;
-      
-      // Only allow updates if booking is still pending payment
-      if (booking.status !== 'pending_payment') {
-        return NextResponse.json(
-          { success: false, error: 'Cannot update confirmed booking' },
-          { status: 400 }
-        );
-      }
-
-      if (vehicle) booking.vehicle = { ...booking.vehicle, ...vehicle };
-      if (issueDescription) booking.issueDescription = issueDescription;
+       // Customers can only update notes/issue if pending
+       if (booking.status === 'pending_payment' && body.issueDescription) {
+           booking.issueDescription = body.issueDescription;
+       }
+       // Customers cannot change status directly via PUT (use DELETE for cancel)
     }
 
-    // Admins can update more fields
-    if (session.user.role === 'admin') {
-      const { status, adminNotes, notes, bookingDate, timeSlot } = body;
-      
-      if (status) booking.status = status;
-      if (adminNotes) booking.adminNotes = adminNotes;
-      if (notes) booking.notes = notes;
-      if (bookingDate) booking.bookingDate = bookingDate;
-      if (timeSlot) booking.timeSlot = timeSlot;
-
-      // If marking as completed, set completedAt
-      if (status === 'completed' && !booking.completedAt) {
-        booking.completedAt = new Date();
-      }
-    }
+    // Common Updates
+    if (notes !== undefined) booking.notes = notes;
 
     await booking.save();
 
-    // Populate before returning
-    await booking.populate('user', 'name email phone');
-    await booking.populate('service', 'name price duration category');
+    // Re-populate for response
+    await booking.populate('service');
+    await booking.populate('user');
+    await booking.populate('staff');
 
-    return NextResponse.json({
-      success: true,
-      data: booking,
-    });
+    return NextResponse.json({ success: true, data: booking });
   } catch (error) {
-    console.error(`Error updating booking ${id}:`, error);
-    
-    if (error.name === 'ValidationError') {
-      return NextResponse.json(
-        { success: false, error: error.message },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json(
-      { success: false, error: 'Server error while updating booking' },
-      { status: 500 }
-    );
+    console.error('Error updating booking:', error);
+    return NextResponse.json({ success: false, error: 'Server error' }, { status: 500 });
   }
 }
 

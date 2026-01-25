@@ -14,6 +14,7 @@ export default function BookingEditForm({ booking }) {
     bookingDate: booking?.bookingDate ? format(new Date(booking.bookingDate), 'yyyy-MM-dd') : '',
     timeSlot: booking?.timeSlot || '',
     adminNotes: booking?.adminNotes || '',
+    staffId: booking.staff?.id || booking.staff || '',
   });
   const [loading, setLoading] = useState(false);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -46,7 +47,9 @@ export default function BookingEditForm({ booking }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.bookingDate, booking?.service?._id]);
-  
+
+   const qualifiedStaff = booking.service?.assignedStaff || [];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -131,55 +134,64 @@ export default function BookingEditForm({ booking }) {
             </select>
           </div>
 
-          {/* Booking Date and Time Slot */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            <div>
-              <label htmlFor="bookingDate" className="block text-sm font-semibold text-slate-700 mb-2">
-                Booking Date
-              </label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <input
-                  type="date"
-                  name="bookingDate"
-                  id="bookingDate"
-                  value={formData.bookingDate}
-                  onChange={handleChange}
-                  min={format(new Date(), 'yyyy-MM-dd')}
-                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="timeSlot" className="block text-sm font-semibold text-slate-700 mb-2">
-                Time Slot
-              </label>
-              <div className="relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <select
-                  name="timeSlot"
-                  id="timeSlot"
-                  value={formData.timeSlot}
-                  onChange={handleChange}
-                  disabled={slotsLoading || availableSlots.length === 0}
-                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white disabled:bg-slate-100"
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Assigned Staff</label>
+            <div className="flex gap-2">
+              <select
+                name="staffId"
+                value={formData.staffId}
+                onChange={handleChange}
+                className="w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  {slotsLoading ? (
-                    <option>Loading slots...</option>
-                  ) : (
-                    <>
-                      {/* Ensure the original slot is always an option */}
-                      {booking.timeSlot && !availableSlots.includes(booking.timeSlot) && <option value={booking.timeSlot}>{booking.timeSlot} (Original)</option>}
-                      {availableSlots.map(slot => (
-                        <option key={slot} value={slot}>{slot}</option>
-                      ))}
-                      {availableSlots.length === 0 && !booking.timeSlot && <option>No slots available</option>}
-                    </>
-                  )}
+                  <option value="">-- Unassigned --</option>
+                {qualifiedStaff.map((staffMember) => {
+                    // Handle both populated object and direct structure
+                    const id = staffMember.staffId?._id || staffMember.staffId;
+                    const name = staffMember.staffId?.name || staffMember.name;
+                    return (
+                        <option key={id} value={id}>
+                            {name}
+                        </option>
+                    );
+                })}
                 </select>
-              </div>
             </div>
           </div>
+
+
+<div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
+          <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-purple-500" />
+            Schedule Management
+          </h3>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <input
+              type="date"
+              name="bookingDate"
+              value={formData.bookingDate}
+              onChange={handleChange}
+              className="w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Time Slot</label>
+            <select
+              name="timeSlot"
+              value={formData.timeSlot}
+              onChange={handleChange}
+              className="w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="08:00-10:00">08:00 - 10:00</option>
+              <option value="10:00-12:00">10:00 - 12:00</option>
+              <option value="12:00-14:00">12:00 - 14:00</option>
+              <option value="14:00-16:00">14:00 - 16:00</option>
+              <option value="16:00-18:00">16:00 - 18:00</option>
+            </select>
+          </div>
+        </div>
           
           {/* Admin Notes */}
           <div>
