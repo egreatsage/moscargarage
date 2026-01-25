@@ -44,7 +44,7 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime })
     
     try {
       const dateStr = date.toISOString().split('T')[0];
-      const response = await fetch(`/api/bookings/availability?date=${dateStr}`);
+      const response = await fetch(`/api/bookings/availability?date=${dateStr}&serviceId=${selectedServiceId}`)
       const data = await response.json();
 
       if (data.success) {
@@ -88,7 +88,7 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime })
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-gray-800">
       {/* Date Selection */}
       <div>
         <label className="flex items-center text-sm font-semibold text-gray-700 mb-3">

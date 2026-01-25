@@ -18,6 +18,11 @@ const BookingSchema = new mongoose.Schema(
       ref: 'Service',
       required: [true, 'Service is required'],
     },
+    staff: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Staff',
+    required: [true, 'Staff assignment is required'], // System will auto-assign this
+  },
     bookingDate: {
       type: Date,
       required: [true, 'Booking date is required'],
@@ -98,7 +103,8 @@ const BookingSchema = new mongoose.Schema(
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  }
+  },
+  
 );
 
 // Virtual for booking 'id'

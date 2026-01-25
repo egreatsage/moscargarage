@@ -1,16 +1,17 @@
 // src/app/api/bookings/route.js
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route'; // Import authOptions
+import { authOptions } from '../auth/[...nextauth]/route';
 import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
-import { sendBookingNotification } from '@/lib/mailer';
 import Service from '@/models/Service';
+import Staff from '@/models/Staff'; // Import Staff to fix MissingSchemaError
+import { sendBookingNotification } from '@/lib/mailer';
 
 // GET all bookings (with filters)
 export async function GET(request) {
   try {
-    const session = await getServerSession(authOptions); // Pass authOptions
+    const session = await getServerSession(authOptions);
     
     if (!session) {
       return NextResponse.json(
@@ -25,7 +26,6 @@ export async function GET(request) {
     const status = searchParams.get('status');
     const userId = searchParams.get('userId');
 
-    // Build query
     let query = {};
 
     // If user is customer, only show their bookings
@@ -36,7 +36,6 @@ export async function GET(request) {
       query.user = userId;
     }
 
-    // Filter by status if provided
     if (status) {
       query.status = status;
     }
@@ -44,6 +43,7 @@ export async function GET(request) {
     const bookings = await Booking.find(query)
       .populate('user', 'name email phone')
       .populate('service', 'name price duration category')
+      .populate('staff', 'name') // Optional: Populate staff name if you want to see it
       .sort({ createdAt: -1 });
 
     return NextResponse.json({
@@ -62,7 +62,7 @@ export async function GET(request) {
 // POST create a new booking
 export async function POST(request) {
   try {
-    const session = await getServerSession(authOptions); // Pass authOptions
+    const session = await getServerSession(authOptions);
     
     if (!session || !session.user) {
       return NextResponse.json(
@@ -82,7 +82,7 @@ export async function POST(request) {
       issueDescription,
     } = body;
 
-    // Validate required fields
+    // --- Validation ---
     if (!serviceId || !bookingDate || !timeSlot || !vehicle || !issueDescription) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
@@ -90,7 +90,6 @@ export async function POST(request) {
       );
     }
 
-    // Validate vehicle information
     if (!vehicle.make || !vehicle.model || !vehicle.year || !vehicle.registration) {
       return NextResponse.json(
         { success: false, error: 'Complete vehicle information is required' },
@@ -98,38 +97,51 @@ export async function POST(request) {
       );
     }
 
-    // Check if service exists
+    // 1. Fetch Service to find QUALIFIED Staff
     const service = await Service.findById(serviceId);
     if (!service) {
-      return NextResponse.json(
-        { success: false, error: 'Service not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
     }
-
-    // Check if service is active
     if (!service.isActive) {
+      return NextResponse.json({ success: false, error: 'Service is not available' }, { status: 400 });
+    }
+
+    // Extract qualified staff IDs (filtering out manual entries without IDs)
+    const qualifiedStaffIds = service.assignedStaff
+      .filter(s => s.staffId)
+      .map(s => s.staffId.toString());
+
+    if (qualifiedStaffIds.length === 0) {
       return NextResponse.json(
-        { success: false, error: 'Service is not available' },
+        { success: false, error: 'No staff members are currently assigned to this service.' },
         { status: 400 }
       );
     }
 
-    // Check if time slot is already booked
-    const existingBooking = await Booking.findOne({
+    // 2. Check for Conflicts (Who is BUSY?)
+    // We check ANY booking at this time, regardless of service type
+    const conflictingBookings = await Booking.find({
       bookingDate: new Date(bookingDate),
-      timeSlot,
+      timeSlot: timeSlot,
       status: { $in: ['confirmed', 'in_progress', 'pending_payment'] },
-    });
+    }).select('staff');
 
-    if (existingBooking) {
+    const busyStaffIds = conflictingBookings.map(b => b.staff ? b.staff.toString() : null).filter(Boolean);
+
+    // 3. Determine Availability (Qualified - Busy)
+    const availableStaffIds = qualifiedStaffIds.filter(id => !busyStaffIds.includes(id));
+
+    if (availableStaffIds.length === 0) {
       return NextResponse.json(
-        { success: false, error: 'This time slot is already booked' },
+        { success: false, error: 'This time slot is fully booked for the selected service.' },
         { status: 400 }
       );
     }
 
-    // --- Start: Generate Booking Number ---
+    // 4. Auto-Assign Staff (Pick the first available one)
+    const assignedStaffId = availableStaffIds[0];
+
+    // --- Generate Booking Number ---
     const date = new Date();
     const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '');
     
@@ -144,14 +156,13 @@ export async function POST(request) {
     }
 
     const bookingNumber = `MOS-${dateStr}-${sequence.toString().padStart(4, '0')}`;
-    // --- End: Generate Booking Number ---
 
-
-    // Create booking
+    // --- Create Booking ---
     const booking = await Booking.create({
-      bookingNumber, // Add generated bookingNumber
+      bookingNumber,
       user: session.user.id,
       service: serviceId,
+      staff: assignedStaffId, // <--- SAVING THE ASSIGNED STAFF
       bookingDate: new Date(bookingDate),
       timeSlot,
       vehicle,
@@ -161,16 +172,16 @@ export async function POST(request) {
       paymentStatus: 'pending',
     });
 
-    // Populate the booking before returning
+    // Populate for response
     await booking.populate('service', 'name price duration category');
     await booking.populate('user', 'name email phone');
+    // We don't necessarily need to send staff info to the user, but we could
 
     // Send email notification
     try {
       await sendBookingNotification(booking);
     } catch (emailError) {
       console.error('Failed to send booking notification email:', emailError);
-      // Don't block the response for email failure
     }
 
     return NextResponse.json(

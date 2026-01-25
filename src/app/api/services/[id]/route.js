@@ -3,6 +3,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Service from '@/models/Service';
+import Staff from '@/models/Staff';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 
 // GET a single service by ID
