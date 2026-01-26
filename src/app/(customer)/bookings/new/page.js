@@ -221,6 +221,7 @@ function NewBookingContent() {
                 onSelect={handleDateTimeSelect}
                 selectedDate={selectedDate}
                 selectedTime={selectedTime}
+                selectedServiceId={service?.id}
               />
             </div>
           )}

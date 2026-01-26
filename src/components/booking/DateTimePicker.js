@@ -1,10 +1,10 @@
 // src/components/booking/DateTimePicker.js
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Calendar, Clock, AlertCircle, Loader2 } from 'lucide-react';
 
-export default function DateTimePicker({ onSelect, selectedDate, selectedTime }) {
+export default function DateTimePicker({ onSelect, selectedDate, selectedTime, selectedServiceId }) {
   const [availableDates, setAvailableDates] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,20 +31,13 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime })
     setAvailableDates(dates);
   }, []);
 
-  // Fetch available time slots when date is selected
-  useEffect(() => {
-    if (selectedDate) {
-      fetchTimeSlots(selectedDate);
-    }
-  }, [selectedDate]);
-
-  const fetchTimeSlots = async (date) => {
+  const fetchTimeSlots = useCallback(async (date) => {
     setLoading(true);
     setError('');
     
     try {
       const dateStr = date.toISOString().split('T')[0];
-      const response = await fetch(`/api/bookings/availability?date=${dateStr}&serviceId=${selectedServiceId}`)
+      const response = await fetch(`/api/bookings/availability?date=${dateStr}&serviceId=${selectedServiceId}`);
       const data = await response.json();
 
       if (data.success) {
@@ -58,7 +51,14 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime })
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedServiceId]);
+
+  // Fetch available time slots when date is selected
+  useEffect(() => {
+    if (selectedDate && selectedServiceId) {
+      fetchTimeSlots(selectedDate);
+    }
+  }, [selectedDate, selectedServiceId, fetchTimeSlots]);
 
   const handleDateSelect = (date) => {
     onSelect({ date, time: null });

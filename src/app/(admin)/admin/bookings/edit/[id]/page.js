@@ -5,7 +5,13 @@ import BookingEditForm from "./BookingEditForm";
 
 async function getBookingById(id) {
     await connectDB();
-    const booking = await Booking.findById(id).populate('user', 'name email').populate('service', 'name');
+    const booking = await Booking.findById(id).populate('user', 'name email').populate({
+        path: 'service',
+        populate: {
+            path: 'assignedStaff.staffId',
+            model: 'Staff'
+        }
+    });
     if (!booking) {
         return null;
     }
@@ -14,7 +20,7 @@ async function getBookingById(id) {
 }
 
 export default async function EditBookingPage({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const booking = await getBookingById(id);
 
   if (!booking) {

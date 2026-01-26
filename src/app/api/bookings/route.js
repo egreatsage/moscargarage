@@ -38,7 +38,7 @@ export async function GET(request) {
     }
 
     if (status) {
-      query.status = status;
+      query.status = { $in: status.split(',') };
     }
 
     const bookings = await Booking.find(query)

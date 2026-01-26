@@ -42,7 +42,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
               value={vehicle.make || ''}
               onChange={(e) => handleVehicleChange('make', e.target.value)}
               placeholder="e.g., Toyota, Honda, BMW"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
           </div>
@@ -58,7 +58,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
               value={vehicle.model || ''}
               onChange={(e) => handleVehicleChange('model', e.target.value)}
               placeholder="e.g., Corolla, Civic, X5"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
           </div>
@@ -72,7 +72,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
               id="year"
               value={vehicle.year || ''}
               onChange={(e) => handleVehicleChange('year', parseInt(e.target.value))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
               <option value="">Select year</option>
@@ -95,7 +95,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
               value={vehicle.registration || ''}
               onChange={(e) => handleVehicleChange('registration', e.target.value.toUpperCase())}
               placeholder="e.g., KAA 123A"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
               required
             />
           </div>
@@ -111,7 +111,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
               value={vehicle.mileage || ''}
               onChange={(e) => handleVehicleChange('mileage', e.target.value)}
               placeholder="e.g., 50000"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -126,7 +126,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
               value={vehicle.color || ''}
               onChange={(e) => handleVehicleChange('color', e.target.value)}
               placeholder="e.g., White, Black, Silver"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
             onChange={(e) => handleIssueChange(e.target.value)}
             placeholder="Please provide details about the service you need or any issues you're experiencing with your vehicle..."
             rows={5}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             required
           />
           <p className="mt-2 text-sm text-gray-500">

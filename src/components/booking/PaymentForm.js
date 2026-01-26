@@ -148,7 +148,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
               value={phoneNumber}
               onChange={handlePhoneChange}
               placeholder="254712345678"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+              className="w-full px-4 py-3 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
               required
               disabled={processing}
             />
