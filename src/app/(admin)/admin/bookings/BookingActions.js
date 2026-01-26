@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Wrench, Trash2, Loader2, Eye, XCircle } from 'lucide-react';
+import { Wrench, Trash2, Loader2, Eye, XCircle, Pencil, PenOff, SquarePen } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 export default function BookingActions({ booking, onAction }) {
@@ -141,7 +141,7 @@ export default function BookingActions({ booking, onAction }) {
         className="text-blue-600 hover:text-blue-800 transition-colors"
         title="Edit/Reschedule"
       >
-        <Wrench className="w-5 h-5" />
+        <SquarePen className="w-5 h-5 text-orange-400" />
       </Link>
       <button
         onClick={confirmDelete}
