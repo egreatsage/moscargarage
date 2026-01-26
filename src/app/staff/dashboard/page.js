@@ -64,6 +64,25 @@ export default function StaffDashboard() {
     }
   };
   
+  const updateStatus = async (bookingId, newStatus) => {
+  const loadingToast = toast.loading('Updating status...');
+  try {
+    const res = await fetch(`/api/bookings/${bookingId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    
+    if (res.ok) {
+      toast.dismiss(loadingToast);
+      toast.success(`Job marked as ${newStatus}`);
+      fetchStaffBookings(); // Refresh list
+    }
+  } catch (error) {
+    toast.error('Failed to update');
+  }
+};
+
   const calculateStats = (data) => {
     const now = new Date();
     const today = now.setHours(0, 0, 0, 0);
@@ -253,7 +272,37 @@ const JobCard = ({ booking }) => {
           {config.label}
         </span>
       </div>
+      {bookings.map((booking) => (
+  <div key={booking._id} className="border p-4 rounded bg-white shadow mb-4">
+    <div className="flex justify-between items-center">
+      <div>
+        <h3 className="font-bold">{booking.service.name}</h3>
+        <p>Car: {booking.vehicle.make} {booking.vehicle.model}</p>
+        <p>Time: {booking.timeSlot}</p>
+      </div>
       
+      <div className="flex gap-2">
+        {booking.status === 'confirmed' && (
+          <button 
+            onClick={() => updateStatus(booking._id, 'in_progress')}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Start Job
+          </button>
+        )}
+        
+        {booking.status === 'in_progress' && (
+          <button 
+            onClick={() => updateStatus(booking._id, 'completed')}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Mark Complete
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+))}
       <div className="space-y-2 text-xs sm:text-sm text-gray-600">
         <div className="flex items-center gap-2">
           <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />

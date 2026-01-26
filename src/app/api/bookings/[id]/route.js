@@ -174,11 +174,16 @@ export async function DELETE(request, context) {
     }
 
     // Apply time-based restrictions only for non-admin users
-    if (session.user.role !== 'admin') {
+    if (session.user.role !== 'admin' ||session.user.role !== 'staff') {
       const now = new Date();
       const bookingDateTime = new Date(booking.bookingDate);
       const [hours] = booking.timeSlot.split('-')[0].split(':').map(Number);
       bookingDateTime.setHours(hours, 0, 0, 0);
+
+      if (status === 'completed') {
+                booking.completedAt = new Date();
+                // TODO: Trigger Notification Function here (e.g., sendCompletionEmail(booking))
+            }
 
       if (bookingDateTime < now) {
         return NextResponse.json(
