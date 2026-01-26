@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
@@ -46,19 +46,20 @@ export default function LoginPage() {
       if (result?.error) {
         toast.error(result.error);
       } else {
+        
+        const session = await getSession();
         toast.success('Logged in successfully!');
         if (session?.user?.role === 'staff') {
-        router.refresh(); // Ensure server components update
-        router.push('/staff/dashboard');
-      } else if (session?.user?.role === 'admin') {
-        router.refresh();
-        router.push('/admin/dashboard');
-      } else {
-        // Default for customers
-        router.refresh();
-        router.push('/profile'); 
-      }
-        router.refresh();
+          router.refresh()
+          router.push('/staff/dashboard');
+        } else if (session?.user?.role === 'admin') {
+          router.refresh();
+          router.push('/admin/dashboard');
+        } else {
+          router.refresh();
+          router.push('/profile');
+        }
+      
       }
     } catch (err) {
       toast.error('An unexpected error occurred. Please try again.');
