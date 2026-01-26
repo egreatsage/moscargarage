@@ -8,6 +8,7 @@ import Payment from '@/models/Payment';
 import Service from '@/models/Service'; // Ensure Service is registered
 import User from '@/models/User';       // Ensure User is registered
 import Staff from '@/models/Staff'
+import { sendEmail } from '@/lib/mailer';
 
 // GET a single booking by ID
 export async function GET(request, context) {
@@ -60,10 +61,16 @@ export async function PUT(request, context) {
 
     await connectDB();
 
-    const booking = await Booking.findById(id);
+    const booking = await Booking.findById(id)
+      .populate('user', 'name email')
+      .populate('service', 'name')
+      .populate('vehicle', 'make model registration')
+      .populate('staff', 'name');
+
     if (!booking) {
       return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
+
 
     const body = await request.json();
     const { 
@@ -105,6 +112,33 @@ export async function PUT(request, context) {
        // Customers cannot change status directly via PUT (use DELETE for cancel)
     }
 
+  if (status === 'in_progress') {
+       await sendEmail({
+         to: booking.user.email,
+         subject: 'Your Service has Started',
+         text: `Hello ${booking.user.name}, your mechanic has started working on your ${booking.vehicle.registration}.`,
+         html: `
+           <h2>Service Started</h2>
+           <p>Hello ${booking.user.name},</p>
+           <p>Your mechanic has started working on your ${booking.vehicle.make} ${booking.vehicle.model}.</p>
+           <p>We'll notify you when it's ready for pickup.</p>
+         `
+       });
+    }
+ if (status === 'completed') {
+       await sendEmail({
+         to: booking.user.email,
+         subject: 'Vehicle Ready for Pickup',
+         text: `Good news! Your ${booking.service.name} is complete.`,
+         html: `
+           <h2>Service Completed!</h2>
+           <p>Good news ${booking.user.name}!</p>
+           <p>Your ${booking.service.name} is complete.</p>
+           <p><strong>Total Amount: KSh ${booking.totalAmount}</strong></p>
+           <p>Your vehicle is ready for pickup.</p>
+         `
+       });
+    }
     // Common Updates
     if (notes !== undefined) booking.notes = notes;
 
