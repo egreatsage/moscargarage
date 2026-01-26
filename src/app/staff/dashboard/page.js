@@ -2,9 +2,10 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import StaffCalendar from '@/components/staff/StaffCalendar';
+
 import { CheckCircle, Clock, Calendar as CalIcon, Wrench } from 'lucide-react';
 import { BookingCardSkeleton } from '@/components/ui/SkeletonLoader';
+import StaffCalendar from '@/components/StaffCalender';
 
 export default function StaffDashboard() {
   const { data: session, status } = useSession();
