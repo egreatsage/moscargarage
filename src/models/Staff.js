@@ -1,4 +1,4 @@
-// models/Staff.js
+// src/models/Staff.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -36,54 +36,30 @@ const StaffSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+  // REMOVED: createdAt and updatedAt are now handled by { timestamps: true }
   profilePicture: {
     type: String,
     default: '',
   },
 }, {
-  timestamps: true,
-  toJSON: { 
-    virtuals: true,
-    transform: (doc, ret) => {
-      delete ret.password;
-      return ret;
-    }
-  },
-  toObject: { virtuals: true },
-});
-
-StaffSchema.virtual('id').get(function() {
-  return this._id.toHexString();
+  timestamps: true // <--- FIX: Automatically manages createdAt and updatedAt
 });
 
 // Hash password before saving
-StaffSchema.pre('save', async function(next) {
+StaffSchema.pre('save', async function() {
   if (!this.isModified('password')) {
-    return next();
+    return;
   }
   
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    next();
   } catch (error) {
-    next(error);
+    throw error;
   }
 });
 
-// Update the updatedAt field before saving
-StaffSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
-  next();
-});
+// REMOVED: The manual "updatedAt" hook which was causing the "next is not a function" error.
 
 // Method to compare passwords
 StaffSchema.methods.comparePassword = async function(candidatePassword) {
@@ -92,6 +68,13 @@ StaffSchema.methods.comparePassword = async function(candidatePassword) {
   } catch (error) {
     throw new Error(error);
   }
+};
+
+// Method to get staff without password
+StaffSchema.methods.toJSON = function() {
+  const staff = this.toObject();
+  delete staff.password;
+  return staff;
 };
 
 export default mongoose.models.Staff || mongoose.model('Staff', StaffSchema);
