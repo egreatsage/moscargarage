@@ -1,4 +1,4 @@
-// src/app/(admin)/admin/services/edit/[id]/page.js
+// src/app/(admin)/admin/staff/edit/[id]/page.js
 import connectDB from "@/lib/mongodb";
 import Staff from "@/models/Staff";
 import StaffForm from "../../StaffForm";

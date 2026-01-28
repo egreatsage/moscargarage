@@ -4,8 +4,8 @@ import connectDB from '@/lib/mongodb';
 import Staff from '@/models/Staff';
 
 // GET a single staff member by ID
-export async function GET(request, context) {
-  const { id } = context.params;
+export async function GET(request, { params }) {
+  const { id } = params;
   try {
     await connectDB();
     const staff = await Staff.findById(id).select('-password');
@@ -20,8 +20,8 @@ export async function GET(request, context) {
 }
 
 // PUT (update) a staff member by ID
-export async function PUT(request, context) {
-  const { id } = context.params;
+export async function PUT(request, { params }) {
+  const { id } = await params;
   try {
     await connectDB();
     const staff = await Staff.findById(id);
@@ -59,8 +59,8 @@ export async function PUT(request, context) {
 }
 
 // DELETE a staff member by ID
-export async function DELETE(request, context) {
-  const { id } = await context.params;
+export async function DELETE(request, { params }) {
+  const { id } = params;
   try {
     await connectDB();
     const deletedStaff = await Staff.findByIdAndDelete(id);

@@ -1,4 +1,4 @@
-// models/User.js
+// models/Staff.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -48,25 +48,41 @@ const StaffSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+}, {
+  timestamps: true,
+  toJSON: { 
+    virtuals: true,
+    transform: (doc, ret) => {
+      delete ret.password;
+      return ret;
+    }
+  },
+  toObject: { virtuals: true },
+});
+
+StaffSchema.virtual('id').get(function() {
+  return this._id.toHexString();
 });
 
 // Hash password before saving
-StaffSchema.pre('save', async function() {
+StaffSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
-    return;
+    return next();
   }
   
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    next();
   } catch (error) {
-    throw error;
+    next(error);
   }
 });
 
 // Update the updatedAt field before saving
 StaffSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
+  next();
 });
 
 // Method to compare passwords
@@ -76,13 +92,6 @@ StaffSchema.methods.comparePassword = async function(candidatePassword) {
   } catch (error) {
     throw new Error(error);
   }
-};
-
-// Method to get staff without password
-StaffSchema.methods.toJSON = function() {
-  const staff = this.toObject();
-  delete staff.password;
-  return staff;
 };
 
 export default mongoose.models.Staff || mongoose.model('Staff', StaffSchema);
