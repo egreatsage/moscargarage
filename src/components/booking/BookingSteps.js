@@ -30,7 +30,7 @@ export default function BookingSteps({ currentStep }) {
               >
                 <div
                   className={`h-full ${
-                    step.id < currentStep ? 'bg-blue-600' : 'bg-gray-300'
+                    step.id < currentStep ? 'bg-orange-600' : 'bg-gray-300'
                   }`}
                 />
               </div>
@@ -42,9 +42,9 @@ export default function BookingSteps({ currentStep }) {
                 <span
                   className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full ${
                     step.id < currentStep
-                      ? 'bg-blue-600'
+                      ? 'bg-orange-600'
                       : step.id === currentStep
-                      ? 'border-2 border-blue-600 bg-white'
+                      ? 'border-2 border-orange-600 bg-white'
                       : 'border-2 border-gray-300 bg-white'
                   }`}
                 >
@@ -53,7 +53,7 @@ export default function BookingSteps({ currentStep }) {
                   ) : (
                     <span
                       className={`h-2.5 w-2.5 rounded-full ${
-                        step.id === currentStep ? 'bg-blue-600' : 'bg-transparent'
+                        step.id === currentStep ? 'bg-orange-600' : 'bg-transparent'
                       }`}
                     />
                   )}
@@ -64,7 +64,7 @@ export default function BookingSteps({ currentStep }) {
               <span className="ml-3 flex min-w-0 flex-col">
                 <span
                   className={`text-sm font-semibold ${
-                    step.id <= currentStep ? 'text-blue-600' : 'text-gray-500'
+                    step.id <= currentStep ? 'text-orange-600' : 'text-gray-500'
                   }`}
                 >
                   {step.name}

@@ -220,8 +220,8 @@ export default function ServiceForm({ service: initialService = null }) {
                 onChange={handleChange} 
                 required 
                 className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-slate-900"
-                min="0" 
-                step="0.01"
+                // min="0" 
+                // step="0.01"
                 placeholder="5000"
               />
             </div>

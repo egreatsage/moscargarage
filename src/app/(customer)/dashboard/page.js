@@ -8,24 +8,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Top Navigation */}
-      <nav className="bg-white border-b border-slate-200 px-4 py-4 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="bg-orange-600 p-2 rounded-lg">
-              <Car className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-slate-900">Moscar Garage</span>
-          </div>
-          
-          <button 
-            onClick={() => signOut({ callbackUrl: '/login' })}
-            className="flex items-center gap-2 text-slate-600 hover:text-orange-600 transition-colors text-sm font-medium"
-          >
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </button>
-        </div>
-      </nav>
+    
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-8">

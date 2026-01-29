@@ -9,7 +9,7 @@ async function getServiceById(id) {
     if (!service) {
         return null;
     }
-    // Convert to plain object and include virtuals
+   
     return JSON.parse(JSON.stringify(service));
 }
 

@@ -50,14 +50,14 @@ export default function StaffPage() {
           <div className="flex items-center gap-4">
             <Link
               href="/admin/staff/new"
-              className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
             >
               <PlusCircle className="w-5 h-5" />
               New Staff Member
             </Link>
             <button
               onClick={handlePrint}
-              className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500"
+              className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-orange-500"
             >
               <Printer className="w-5 h-5 mr-2" />
               Print
@@ -86,7 +86,7 @@ export default function StaffPage() {
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialization</th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> */}
                     <th scope="col" className="relative px-6 py-3 no-print"><span className="sr-only">Actions</span></th>
                   </tr>
                 </thead>
@@ -100,7 +100,7 @@ export default function StaffPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{st.email}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{st.workdesignation}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        {/* <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                               st.isActive
@@ -110,7 +110,7 @@ export default function StaffPage() {
                           >
                             {st.isActive ? 'Active' : 'Inactive'}
                           </span>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium no-print">
                           <StaffActions staffId={st._id} />
                         </td>

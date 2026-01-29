@@ -1,20 +1,47 @@
 // src/app/(admin)/layout.js
+'use client';
+
 import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { useSession } from 'next-auth/react';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-export default async function AdminLayout({ children }) {
-  const session = await getServerSession(authOptions);
+export default function AdminLayout({ children }) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Check if user is authenticated
-  if (!session) {
-    redirect('/login?callbackUrl=/admin');
+  // Check authentication
+  useEffect(() => {
+    if (status === 'loading') return;
+
+    if (!session) {
+      router.push('/login?callbackUrl=/admin');
+      return;
+    }
+
+    if (session.user.role !== 'admin') {
+      router.push('/login');
+    }
+  }, [session, status, router]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  const handleMobileLinkClick = () => {
+    setMobileMenuOpen(false);
+  };
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
   }
 
-  // Check if user has admin role
-  if (session.user.role !== 'admin') {
-    redirect('/login');
+  if (!session || session.user.role !== 'admin') {
+    return null;
   }
 
   return (
@@ -36,9 +63,6 @@ export default async function AdminLayout({ children }) {
               <Link href="/admin/bookings" className="hover:text-gray-300">
                 Bookings
               </Link>
-              <Link href="/admin/customers" className="hover:text-gray-300">
-                Customers
-              </Link>
               <Link href="/admin/services" className="hover:text-gray-300">
                 Services
               </Link>
@@ -49,72 +73,89 @@ export default async function AdminLayout({ children }) {
                 My Staff
               </Link>
               <Link href="/admin/users" className="hover:text-gray-300">
-              Users
+                Users
               </Link>
             </div>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
-              <details className="relative">
-                <summary className="cursor-pointer list-none">
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="cursor-pointer"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  {mobileMenuOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       d="M4 6h16M4 12h16M4 18h16"
                     />
-                  </svg>
-                </summary>
-
-                {/* Mobile Menu */}
-                <div className="absolute right-0 mt-2 w-48 rounded-md bg-gray-800 shadow-lg">
-                  <Link
-                    href="/admin/dashboard"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    href="/admin/bookings"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Bookings
-                  </Link>
-                  <Link
-                    href="/admin/customers"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Customers
-                  </Link>
-                  <Link
-                    href="/admin/services"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Services
-                  </Link>
-                  <Link
-                    href="/admin/revenue"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Revenue A
-                  </Link>
-                  <Link
-                    href="/admin/staff"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    My Staff
-                  </Link>
-                </div>
-              </details>
+                  )}
+                </svg>
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute right-4 mt-2 w-48 rounded-md bg-gray-800 shadow-lg z-50">
+            <Link
+              href="/admin/dashboard"
+              onClick={handleMobileLinkClick}
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/admin/bookings"
+              onClick={handleMobileLinkClick}
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Bookings
+            </Link>
+            <Link
+              href="/admin/services"
+              onClick={handleMobileLinkClick}
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Services
+            </Link>
+            <Link
+              href="/admin/revenue"
+              onClick={handleMobileLinkClick}
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Revenue Analytics
+            </Link>
+            <Link
+              href="/admin/staff"
+              onClick={handleMobileLinkClick}
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              My Staff
+            </Link>
+            <Link
+              href="/admin/users"
+              onClick={handleMobileLinkClick}
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Users
+            </Link>
+          </div>
+        )}
       </nav>
 
       {/* Page Content */}

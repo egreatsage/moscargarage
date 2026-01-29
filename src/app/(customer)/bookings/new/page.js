@@ -169,7 +169,7 @@ function NewBookingContent() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-orange-600" />
       </div>
     );
   }
@@ -214,7 +214,7 @@ function NewBookingContent() {
                 </div>
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-gray-600">Price:</span>
-                  <span className="text-2xl font-bold text-blue-600">
+                  <span className="text-2xl font-bold text-orange-600">
                     {service.priceType === 'starting_from' && 'From '}
                     KES {service.price.toLocaleString()}
                   </span>
@@ -289,7 +289,7 @@ function NewBookingContent() {
               <button
                 onClick={handleNext}
                 disabled={!canProceedToNextStep() || submitting}
-                className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {submitting ? (
                   <>
@@ -315,7 +315,7 @@ export default function NewBookingPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-orange-600" />
       </div>
     }>
       <NewBookingContent />

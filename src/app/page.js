@@ -122,69 +122,86 @@ export default async function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gradient-to-br from-slate-50 to-orange-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full mb-4 font-semibold">
-              <Wrench className="w-4 h-4" />
-              Our Services
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-              Comprehensive Auto Care
-            </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              From routine maintenance to major repairs, we've got your vehicle covered
-            </p>
-          </div>
+     <section id="services" className="py-20 bg-gradient-to-br from-slate-50 to-orange-50">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-16">
+      <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full mb-4 font-semibold">
+        <Wrench className="w-4 h-4" />
+        Our Services
+      </div>
+      <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+        Comprehensive Auto Care
+      </h2>
+      <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+        From routine maintenance to major repairs, we've got your vehicle covered
+      </p>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {services.slice(0, 6).map((service) => (
-              <div 
-                key={service._id}
-                className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 border border-slate-200 hover:border-orange-300 hover:-translate-y-1"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="relative flex-shrink-0 w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 text-orange-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    {service.image ? (
-                        <Image src={service.image} alt={service.name} fill className="object-cover rounded-xl" />
-                    ) : (
-                        <Wrench className="w-6 h-6" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
-                      {service.name}
-                    </h3>
-                  </div>
-                </div>
-                
-                <p className="text-slate-600 mb-4 leading-relaxed">
-                  {service.description}
-                </p>
-                
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                  <div className="flex flex-col">
-                    <span className="text-sm text-slate-500">{service.priceType === 'starting_from' ? 'Starting at' : 'Price'}</span>
-                    <span className="text-lg font-bold text-orange-600">KES {service.price.toLocaleString()}</span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-sm text-slate-500">Duration</span>
-                    <span className="text-sm font-semibold text-slate-700">{service.duration}</span>
-                  </div>
-                </div>
-                
-                <Link 
-                  href={`/bookings/new?serviceId=${service._id}`}
-                  className="mt-4 w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
-                >
-                  Book Now
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            ))}
+    <section id="services" className="py-20 bg-gradient-to-br from-slate-50 to-orange-50">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-16">
+      <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full mb-4 font-semibold">
+        <Wrench className="w-4 h-4" />
+        Our Services
+      </div>
+      <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+        Comprehensive Auto Care
+      </h2>
+      <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+        From routine maintenance to major repairs, we've got your vehicle covered
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      {services.slice(0, 6).map((service) => (
+        <div 
+          key={service._id}
+          className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 border border-slate-200 hover:border-orange-300 hover:-translate-y-1 flex flex-col"
+        >
+          <div className="flex items-start gap-4 mb-4">
+            <div className="relative flex-shrink-0 w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 text-orange-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+              {service.image ? (
+                  <Image src={service.image} alt={service.name} fill className="object-cover rounded-xl" />
+              ) : (
+                  <Wrench className="w-6 h-6" />
+              )}
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
+                {service.name}
+              </h3>
+            </div>
           </div>
+          
+          <p className="text-slate-600 mb-4 leading-relaxed flex-grow">
+            {service.description}
+          </p>
+          
+          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+            <div className="flex flex-col">
+              <span className="text-sm text-slate-500">{service.priceType === 'starting_from' ? 'Starting at' : 'Price'}</span>
+              <span className="text-lg font-bold text-orange-600">KES {service.price.toLocaleString()}</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-sm text-slate-500">Duration</span>
+              <span className="text-sm font-semibold text-slate-700">{service.duration}</span>
+            </div>
+          </div>
+          
+          <Link 
+            href={`/bookings/new?serviceId=${service._id}`}
+            className="mt-4 w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
+          >
+            Book Now
+            <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+  </div>
+</section>
 
       {/* Why Choose Us Section */}
       <section className="py-20 bg-white">

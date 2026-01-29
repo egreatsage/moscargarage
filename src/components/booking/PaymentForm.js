@@ -129,7 +129,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
   return (
     <div className="space-y-6">
     
-      <div className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg text-white">
+      <div className="p-6 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg text-white">
         <div className="text-sm font-medium mb-1">Total Amount</div>
         <div className="text-4xl font-bold">KES {amount.toLocaleString()}</div>
       </div>
@@ -148,7 +148,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
               value={phoneNumber}
               onChange={handlePhoneChange}
               placeholder="254712345678"
-              className="w-full px-4 py-3 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+              className="w-full px-4 py-3 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
               required
               disabled={processing}
             />
@@ -187,7 +187,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
       
       {paymentStatus === 'processing' && (
         <div className="text-center py-8">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 animate-spin text-orange-600 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Sending Payment Request...
           </h3>
@@ -199,16 +199,16 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
       {paymentStatus === 'checking' && (
         <div className="text-center py-8">
           <div className="relative mb-6">
-            <Smartphone className="w-16 h-16 text-blue-600 mx-auto" />
+            <Smartphone className="w-16 h-16 text-orange-600 mx-auto" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+              <Loader2 className="w-8 h-8 animate-spin text-orange-600" />
             </div>
           </div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Waiting for Payment Confirmation
           </h3>
           <p className="text-gray-600 mb-4">{statusMessage}</p>
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+          <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg text-sm text-orange-700">
             <p className="font-medium mb-1">Steps to complete payment:</p>
             <ol className="list-decimal list-inside space-y-1 text-left">
               <li>Check your phone for the M-Pesa prompt</li>
@@ -240,7 +240,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
           <p className="text-red-600 mb-6">{error}</p>
           <button
             onClick={handleRetry}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
           >
             Try Again
           </button>

@@ -76,7 +76,7 @@ export default function MyBookingsPage() {
       case 'pending_payment':
         return 'bg-yellow-100 text-yellow-800';
       case 'in_progress':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-orange-100 text-orange-800';
       case 'completed':
         return 'bg-gray-100 text-gray-800';
       case 'cancelled':
@@ -119,7 +119,7 @@ export default function MyBookingsPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-orange-600" />
       </div>
     );
   }
@@ -133,13 +133,7 @@ export default function MyBookingsPage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">My Bookings</h1>
             <p className="text-gray-600">View and manage your service bookings</p>
           </div>
-          <Link
-            href="/services"
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-            <span>New Booking</span>
-          </Link>
+         
         </div>
 
         {/* Filter Tabs */}
@@ -157,7 +151,7 @@ export default function MyBookingsPage() {
               onClick={() => setFilter(tab.value)}
               className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
                 filter === tab.value
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-orange-600 text-white'
                   : 'bg-white text-gray-600 hover:bg-gray-100'
               }`}
             >
@@ -231,7 +225,7 @@ export default function MyBookingsPage() {
                     <div className="flex flex-col gap-2 lg:w-48">
                       <Link
                         href={`/bookings/${booking.id}`}
-                        className="w-full bg-blue-600 text-white text-center py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                        className="w-full bg-orange-600 text-white text-center py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
                       >
                         View Details
                       </Link>
@@ -272,7 +266,7 @@ export default function MyBookingsPage() {
             </p>
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
             >
               <Plus className="w-5 h-5" />
               <span>Book a Service</span>

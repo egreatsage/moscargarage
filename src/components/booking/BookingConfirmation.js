@@ -122,7 +122,7 @@ export default function BookingConfirmation({ booking }) {
           </div>
           <div className="flex items-center">
             <Phone className="w-4 h-4 mr-2" />
-            <span>+254758891081</span>
+            <span>+254 712 345 678</span>
           </div>
           <div className="flex items-center">
             <Mail className="w-4 h-4 mr-2" />

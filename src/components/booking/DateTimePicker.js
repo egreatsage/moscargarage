@@ -106,8 +106,8 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
                 onClick={() => handleDateSelect(date)}
                 className={`p-3 rounded-lg border-2 text-center transition-all ${
                   isSelected
-                    ? 'border-blue-600 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                    ? 'border-orange-600 bg-orange-50 text-orange-700'
+                    : 'border-gray-200 hover:border-orange-300 hover:bg-gray-50'
                 }`}
               >
                 <div className="text-xs font-medium text-gray-500 mb-1">
@@ -135,7 +135,7 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
 
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+              <Loader2 className="w-6 h-6 animate-spin text-orange-600" />
               <span className="ml-2 text-gray-600">Checking availability...</span>
             </div>
           ) : error ? (
@@ -158,8 +158,8 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
                       !slot.available
                         ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
                         : isSelected
-                        ? 'border-blue-600 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                        ? 'border-orange-600 bg-orange-50 text-orange-700'
+                        : 'border-gray-200 hover:border-orange-300 hover:bg-gray-50'
                     }`}
                   >
                     <div className="font-semibold">{slot.slot}</div>
@@ -182,8 +182,8 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
 
       {/* Selected Summary */}
       {selectedDate && selectedTime && (
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-center gap-2 text-blue-700">
+        <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <div className="flex items-center gap-2 text-orange-700">
             <Calendar className="w-5 h-5" />
             <span className="font-semibold">
               {formatDate(selectedDate)} at {selectedTime}

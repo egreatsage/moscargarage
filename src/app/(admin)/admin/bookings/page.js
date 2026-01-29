@@ -164,14 +164,14 @@ export default function AdminBookingsPage() {
               placeholder="Search by booking number, customer name, or registration..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 text-gray-800 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 text-gray-800  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Status</option>
             <option value="pending_payment">Pending Payment</option>
@@ -182,7 +182,7 @@ export default function AdminBookingsPage() {
           </select>
           <button
             onClick={handlePrint}
-            className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500"
+            className="flex items-center justify-center px-4 py-2  rounded-lg bg-white text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500"
           >
             <Printer className="w-5 h-5 mr-2" />
             Print
@@ -281,20 +281,15 @@ export default function AdminBookingsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <select
-                          value={booking.status}
-                          onChange={(e) => handleStatusUpdate(booking.id, e.target.value)}
-                          className={`text-xs font-semibold rounded-full px-3 py-1 border-0 ${getStatusColor(
-                            booking.status
-                          )}`}
-                        >
-                          <option value="pending_payment">Pending Payment</option>
-                          <option value="confirmed">Confirmed</option>
-                          <option value="in_progress">In Progress</option>
-                          <option value="completed">Completed</option>
-                          <option value="cancelled">Cancelled</option>
-                        </select>
-                      </td>
+  <span
+    className={`text-xs font-semibold rounded-full px-3 py-1 inline-block ${getStatusColor(
+      booking.status
+    )}`}
+  >
+    {booking.status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+  </span>
+</td>
+
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-right no-print">
                         <BookingActions booking={booking} onAction={fetchBookings} />
                       </td>

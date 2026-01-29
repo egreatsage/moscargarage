@@ -123,9 +123,9 @@ const RevenueDashboard = () => {
     return null;
   };
 
-  const StatCard = ({ title, value, icon: Icon, trend, trendValue, color = "blue" }) => {
+  const StatCard = ({ title, value, icon: Icon, trend, trendValue, color = "orange" }) => {
     const colorClasses = {
-      blue: "bg-blue-500",
+      orange: "bg-orange-500",
       green: "bg-green-500",
       purple: "bg-purple-500",
       orange: "bg-orange-500"
@@ -162,7 +162,7 @@ const RevenueDashboard = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <RefreshCw className="w-8 h-8 text-blue-500 animate-spin" />
+          <RefreshCw className="w-8 h-8 text-orange-500 animate-spin" />
           <p className="mt-4 text-gray-600">Loading revenue data...</p>
         </div>
       </div>
@@ -204,7 +204,7 @@ const RevenueDashboard = () => {
           <button
             onClick={handlePrint}
             disabled={isPrinting}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+            className="flex items-center gap-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
           >
             {isPrinting ? (
               <>
@@ -241,7 +241,7 @@ const RevenueDashboard = () => {
             <select
               value={timeframe}
               onChange={(e) => setTimeframe(e.target.value)}
-              className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             >
               <option className='text-gray-800' value="week">This Week</option>
               <option className='text-gray-800' value="month">Monthly</option>
@@ -254,7 +254,7 @@ const RevenueDashboard = () => {
                 <select
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                  className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 >
                   {Array.from({ length: 12 }, (_, i) => (
                     <option key={i + 1} value={i + 1}>
@@ -265,7 +265,7 @@ const RevenueDashboard = () => {
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                  className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 >
                   {Array.from({ length: 5 }, (_, i) => {
                     const year = new Date().getFullYear() - i;
@@ -283,7 +283,7 @@ const RevenueDashboard = () => {
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 {Array.from({ length: 5 }, (_, i) => {
                   const year = new Date().getFullYear() - i;
@@ -298,7 +298,7 @@ const RevenueDashboard = () => {
 
             <button
               onClick={fetchRevenueData}
-              className="ml-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+              className="ml-auto px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors flex items-center gap-2"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
@@ -312,7 +312,7 @@ const RevenueDashboard = () => {
             title="Total Revenue"
             value={formatCurrency(summary.totalRevenue)}
             icon={DollarSign}
-            color="blue"
+            color="orange"
             trend={revenueGrowth?.growthPercentage >= 0 ? 'up' : 'down'}
             trendValue={revenueGrowth ? `${Math.abs(revenueGrowth.growthPercentage).toFixed(1)}%` : null}
           />
@@ -338,7 +338,7 @@ const RevenueDashboard = () => {
 
         {/* Revenue Growth Card */}
         {revenueGrowth && (
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg p-6 mb-6 text-white">
+          <div className="bg-gradient-to-r from-orange-500 to-purple-600 rounded-lg shadow-lg p-6 mb-6 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold mb-2">Period-over-Period Growth</h3>
@@ -530,7 +530,7 @@ const RevenueDashboard = () => {
                 {servicePopularity.map((service, index) => (
                   <tr key={service._id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="py-3 px-4">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-semibold text-sm">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-100 text-orange-600 font-semibold text-sm">
                         {index + 1}
                       </div>
                     </td>
@@ -558,9 +558,9 @@ const RevenueDashboard = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {topCustomers.slice(0, 6).map((customer, index) => (
-              <div key={customer._id} className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
+              <div key={customer._id} className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-purple-50 rounded-lg border border-orange-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                     {index + 1}
                   </div>
                   <div>
