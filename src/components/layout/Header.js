@@ -29,7 +29,6 @@ export default function Header() {
       return (
         <>
           <span className="text-sm font-medium text-gray-700  sm:block">
-  Welcome, {user.name?.split(' ')[0]}
   {user.role === 'admin' && (
     <Link href="/admin/dashboard" className="ml-2 text-xs text-white bg-red-500 px-2 py-1 rounded-full hover:bg-red-600 transition-colors">
       Dashbaord
