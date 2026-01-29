@@ -2,8 +2,8 @@ import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
 
-export async function GET(request, context) {
-  const { id } = await context.params;
+export async function GET(request, { params }) {
+  const { id } = params;
   try {
     await connectDB();
     const customer = await User.findById(id).select('-password');
@@ -18,8 +18,8 @@ export async function GET(request, context) {
 }
 
 // PUT (update) a customer by ID
-export async function PUT(request, context) {
-  const { id } = await context.params;
+export async function PUT(request, { params }) {
+  const { id } = params;
   try {
     await connectDB();
     const customer = await User.findById(id);

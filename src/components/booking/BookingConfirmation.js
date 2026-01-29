@@ -103,10 +103,6 @@ export default function BookingConfirmation({ booking }) {
           </li>
           <li className="flex items-start">
             <span className="mr-2">•</span>
-            <span>Bring your vehicle registration documents</span>
-          </li>
-          <li className="flex items-start">
-            <span className="mr-2">•</span>
             <span>A confirmation email has been sent to your registered email</span>
           </li>
           <li className="flex items-start">

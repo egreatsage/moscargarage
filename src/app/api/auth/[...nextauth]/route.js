@@ -29,6 +29,7 @@ export const authOptions = {
               email: user.email,
               role: user.role, // 'customer' or 'admin'
               image: user.vehicle?.photo || '', // Optional
+              vehicle: user.vehicle,
             };
           }
         }
@@ -58,7 +59,7 @@ export const authOptions = {
   ],
   callbacks: {
     // Add role and ID to the token
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.role = user.role;
         token.id = user.id;
@@ -66,6 +67,10 @@ export const authOptions = {
         if (user.role === 'staff') {
            token.designation = user.designation;
         }
+        token.vehicle = user.vehicle;
+      }
+      if (trigger === "update" && session?.vehicle) {
+        token.vehicle = session.vehicle;
       }
       return token;
     },
@@ -74,6 +79,7 @@ export const authOptions = {
       if (session.user) {
         session.user.role = token.role;
         session.user.id = token.id;
+        session.user.vehicle = token.vehicle;
         if (token.role === 'staff') {
             session.user.designation = token.designation;
         }

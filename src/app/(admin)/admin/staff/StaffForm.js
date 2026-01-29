@@ -51,7 +51,7 @@ export default function StaffForm({ staff: initialStaff = null }) {
     
     const promise = new Promise(async (resolve, reject) => {
       try {
-        const url = isEditing ? `/api/staff/${initialStaff.id}` : '/api/staff';
+        const url = isEditing ? `/api/staff/${initialStaff._id}` : '/api/staff';
         const method = isEditing ? 'PUT' : 'POST';
 
         const response = await fetch(url, { method, body: data });

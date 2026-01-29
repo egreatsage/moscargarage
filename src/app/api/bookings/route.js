@@ -6,7 +6,7 @@ import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import Service from '@/models/Service';
 import Staff from '@/models/Staff'; // Import Staff to fix MissingSchemaError
-import { sendBookingNotification } from '@/lib/mailer';
+import { sendBookingNotification, sendCustomerBookingConfirmation } from '@/lib/mailer';
 
 // GET all bookings (with filters)
 export async function GET(request) {
@@ -84,7 +84,7 @@ export async function POST(request) {
     } = body;
 
     // --- Validation ---
-    if (!serviceId || !bookingDate || !timeSlot || !vehicle || !issueDescription) {
+    if (!serviceId || !bookingDate || !timeSlot || !vehicle ) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
@@ -176,14 +176,26 @@ export async function POST(request) {
     // Populate for response
     await booking.populate('service', 'name price duration category');
     await booking.populate('user', 'name email phone');
-    // We don't necessarily need to send staff info to the user, but we could
 
-    // Send email notification
-    try {
-      await sendBookingNotification(booking);
-    } catch (emailError) {
-      console.error('Failed to send booking notification email:', emailError);
-    }
+    // // Send email notifications - MOVING THIS TO AFTER PAYMENT CONFIRMATION
+    // const emailPromises = [];
+    
+    // // Send admin notification
+    // emailPromises.push(
+    //   sendBookingNotification(booking).catch(error => {
+    //     console.error('Failed to send admin notification email:', error);
+    //   })
+    // );
+    
+    // // Send customer confirmation
+    // emailPromises.push(
+    //   sendCustomerBookingConfirmation(booking).catch(error => {
+    //     console.error('Failed to send customer confirmation email:', error);
+    //   })
+    // );
+
+    // // Wait for all emails to be sent (but don't block the response if they fail)
+    // await Promise.allSettled(emailPromises);
 
     return NextResponse.json(
       {

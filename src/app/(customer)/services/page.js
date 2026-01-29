@@ -61,7 +61,7 @@ export default async function ServicesPage() {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     ) : (
-                      <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-500 to-blue-600">
+                      <div className="flex items-center justify-center h-full bg-gradient-to-br from-orange-500 to-orange-600">
                         <Tag className="w-12 h-12 sm:w-16 sm:h-16 text-white opacity-50" />
                       </div>
                     )}
@@ -92,7 +92,7 @@ export default async function ServicesPage() {
 
                     {/* Price */}
                     <div className="mb-4 mt-auto">
-                      <div className="text-2xl sm:text-3xl font-bold text-blue-600">
+                      <div className="text-2xl sm:text-3xl font-bold text-orange-600">
                         {service.priceType === 'starting_from' && (
                           <span className="text-sm font-normal text-gray-500">From </span>
                         )}
@@ -103,7 +103,7 @@ export default async function ServicesPage() {
                     {/* Book Now Button */}
                     <Link
                       href={`/bookings/new?serviceId=${service._id}`}
-                      className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                      className="block w-full bg-orange-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
                     >
                       <div className="flex items-center justify-center gap-2">
                         <Calendar className="w-5 h-5" />

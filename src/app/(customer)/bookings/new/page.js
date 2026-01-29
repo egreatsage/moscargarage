@@ -43,6 +43,16 @@ function NewBookingContent() {
     }
   }, [status, router]);
 
+  // Pre-fill vehicle data from session
+  useEffect(() => {
+    if (session?.user?.vehicle) {
+      setVehicle(prev => ({
+        ...prev,
+        ...session.user.vehicle,
+      }));
+    }
+  }, [session]);
+
   // Fetch service details
   useEffect(() => {
     const serviceId = searchParams.get('serviceId');

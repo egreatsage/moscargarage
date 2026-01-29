@@ -37,7 +37,7 @@ export default function Header() {
   )}
 </span>
           <Link
-            href="/profile"
+            href="/dashboard"
             className="text-gray-600 hover:text-blue-600 p-2 rounded-full transition-colors"
             title="Profile"
           >
@@ -65,7 +65,7 @@ export default function Header() {
         </Link>
         <Link
           href="/register"
-          className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
+          className="flex items-center space-x-2 bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-700 transition-colors"
         >
           <UserPlus className="w-4 h-4" />
           <span>Register</span>
@@ -79,7 +79,8 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-blue-600">
+            <Link href="/" className="text-2xl font-bold text-orange-600">
+            <img src="/logo.png" alt="Moscar Logo" className="inline-block w-16 h-16 mr-2 rounded-md object-cover" />
               Moscar
             </Link>
           </div>

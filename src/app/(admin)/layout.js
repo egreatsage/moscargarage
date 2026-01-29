@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }) {
 
   // Check if user has admin role
   if (session.user.role !== 'admin') {
-    redirect('/unauthorized');
+    redirect('/login');
   }
 
   return (

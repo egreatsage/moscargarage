@@ -53,7 +53,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-slate-100">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-orange-900 to-slate-800 text-white">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2djhoOFYxNnptMCA4djhoOFYyNHptLTggOHY4aDhWMzJ6bS04IDh2OGg4VjQwem04LThWMjRoOHY4em04LThWMTZoOHY4em04IDh2OGg4VjMyem04IDh2OGg4VjQweiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
+       
         
         <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -221,17 +221,19 @@ export default async function HomePage() {
               </div>
               
               <div className="relative">
-                <div className="aspect-square bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl shadow-2xl overflow-hidden">
-                  <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMTZ2OGg4VjE2em0wIDh2OGg4VjI0em0tOCA4djhoOFYzMnptLTggOHY4aDhWNDB6bTgtOFYyNGg4djh6bTgtOFYxNmg4djh6bTggOHY4aDhWMzJ6bTggOHY4aDhWNDB6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50"></div>
+                <div className="aspect-square  overflow-hidden">
+                
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Car className="w-48 h-48 text-white/30" />
+                
+                    <img 
+                      src="/logo.png" 
+                      alt="Car Service" 
+                      className="object-cover w-full h-full "
+                    />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent"></div>
+                 
                   <div className="absolute bottom-8 left-8 right-8">
-                    <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
-                      <div className="text-4xl font-bold text-slate-900 mb-1">500+</div>
-                      <div className="text-slate-600">Happy Customers</div>
-                    </div>
+                   
                   </div>
                 </div>
               </div>

@@ -136,18 +136,18 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
       <div>
         <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-4">
           <FileText className="w-5 h-5 mr-2" />
-          Issue Description
+          Issue Description(Optional)
         </h3>
 
         <div>
           <label htmlFor="issueDescription" className="block text-sm font-medium text-gray-700 mb-2">
-            Describe the issue or service needed <span className="text-red-500">*</span>
+            Kindly expound more on yuor issue if necessarily 
           </label>
           <textarea
             id="issueDescription"
             value={issueDescription || ''}
             onChange={(e) => handleIssueChange(e.target.value)}
-            placeholder="Please provide details about the service you need or any issues you're experiencing with your vehicle..."
+            placeholder="Please provide details about the service you need or any issues you're experiencing with your vehicle...(optional)"
             rows={5}
             className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             required

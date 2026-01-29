@@ -4,6 +4,7 @@ import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import Payment from '@/models/Payment';
 import { processCallback } from '@/lib/mpesa';
+import { sendBookingNotification, sendCustomerBookingConfirmation } from '@/lib/mailer';
 
 // POST handle M-Pesa callback
 export async function POST(request) {
@@ -65,6 +66,14 @@ export async function POST(request) {
         booking.paymentStatus = 'paid';
         booking.paymentReference = callbackData.mpesaReceiptNumber;
         await booking.save();
+        
+        // Populate data needed for email templates
+        await booking.populate('service', 'name price duration category');
+        await booking.populate('user', 'name email phone');
+
+        // Send notification emails
+        sendBookingNotification(booking).catch(err => console.error("Failed to send admin booking notification:", err));
+        sendCustomerBookingConfirmation(booking).catch(err => console.error("Failed to send customer confirmation:", err));
 
         console.log(`Booking ${booking.bookingNumber} confirmed with payment ${callbackData.mpesaReceiptNumber}`);
       }

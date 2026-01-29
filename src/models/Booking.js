@@ -42,7 +42,7 @@ const BookingSchema = new mongoose.Schema(
     },
     issueDescription: {
       type: String,
-      required: [true, 'Please describe the issue or requirement'],
+      required: false,
     },
     status: {
       type: String,

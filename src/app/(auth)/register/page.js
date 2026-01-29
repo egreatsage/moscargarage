@@ -125,8 +125,8 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-slate-100 flex items-center justify-center px-4 py-12">
       <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-6 sm:p-8">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mb-4 shadow-lg">
-            <Car className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-lg">
+            <img src="/logo.png" alt="Moscar Logo" className="w-30 h-30 rounded-md object-cover" />
           </div>
           <h1 className="text-3xl font-bold text-slate-900">Create Account</h1>
           <p className="text-slate-600 mt-2">Join Moscar Garage today</p>

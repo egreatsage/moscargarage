@@ -61,7 +61,7 @@ export default function Dashboard() {
 
           {/* Quick Action: New Booking */}
           <Link 
-            href="/" 
+            href="/services" 
             className="group bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:border-orange-200 transition-all duration-300"
           >
             <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
