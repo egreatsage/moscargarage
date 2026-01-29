@@ -1,4 +1,3 @@
-// models/User.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -75,7 +74,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-// Hash password before saving
+
 UserSchema.pre('save', async function() {
   if (!this.isModified('password')) {
     return;
@@ -89,12 +88,12 @@ UserSchema.pre('save', async function() {
   }
 });
 
-// Update the updatedAt field before saving
+
 UserSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
 });
 
-// Method to compare passwords
+
 UserSchema.methods.comparePassword = async function(candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
@@ -103,7 +102,7 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
   }
 };
 
-// Method to get user without password
+
 UserSchema.methods.toJSON = function() {
   const user = this.toObject();
   delete user.password;

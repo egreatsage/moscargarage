@@ -5,10 +5,10 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import Service from '@/models/Service';
-import Staff from '@/models/Staff'; // Import Staff to fix MissingSchemaError
+import Staff from '@/models/Staff'; 
 import { sendBookingNotification, sendCustomerBookingConfirmation } from '@/lib/mailer';
 
-// GET all bookings (with filters)
+
 export async function GET(request) {
   try {
     const session = await getServerSession(authOptions);
@@ -28,7 +28,7 @@ export async function GET(request) {
 
     let query = {};
 
-    // If user is customer, only show their bookings
+    
     if (session.user.role === 'customer') {
       query.user = session.user.id;
     }else if (session.user.role === 'staff') {
@@ -44,8 +44,7 @@ export async function GET(request) {
     const bookings = await Booking.find(query)
       .populate('user', 'name email phone')
       .populate('service', 'name price duration category')
-      .populate('staff', 'name') // Optional: Populate staff name if you want to see it
-      .sort({ createdAt: -1 });
+      .populate('staff', 'name') 
 
     return NextResponse.json({
       success: true,
@@ -60,7 +59,7 @@ export async function GET(request) {
   }
 }
 
-// POST create a new booking
+
 export async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
@@ -83,7 +82,7 @@ export async function POST(request) {
       issueDescription,
     } = body;
 
-    // --- Validation ---
+    
     if (!serviceId || !bookingDate || !timeSlot || !vehicle ) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
@@ -98,7 +97,7 @@ export async function POST(request) {
       );
     }
 
-    // 1. Fetch Service to find QUALIFIED Staff
+    
     const service = await Service.findById(serviceId);
     if (!service) {
       return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
@@ -107,7 +106,7 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'Service is not available' }, { status: 400 });
     }
 
-    // Extract qualified staff IDs (filtering out manual entries without IDs)
+    
     const qualifiedStaffIds = service.assignedStaff
       .filter(s => s.staffId)
       .map(s => s.staffId.toString());
@@ -119,8 +118,6 @@ export async function POST(request) {
       );
     }
 
-    // 2. Check for Conflicts (Who is BUSY?)
-    // We check ANY booking at this time, regardless of service type
     const conflictingBookings = await Booking.find({
       bookingDate: new Date(bookingDate),
       timeSlot: timeSlot,
@@ -129,7 +126,7 @@ export async function POST(request) {
 
     const busyStaffIds = conflictingBookings.map(b => b.staff ? b.staff.toString() : null).filter(Boolean);
 
-    // 3. Determine Availability (Qualified - Busy)
+   
     const availableStaffIds = qualifiedStaffIds.filter(id => !busyStaffIds.includes(id));
 
     if (availableStaffIds.length === 0) {
@@ -139,10 +136,10 @@ export async function POST(request) {
       );
     }
 
-    // 4. Auto-Assign Staff (Pick the first available one)
+    
     const assignedStaffId = availableStaffIds[0];
 
-    // --- Generate Booking Number ---
+   
     const date = new Date();
     const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '');
     
@@ -158,12 +155,12 @@ export async function POST(request) {
 
     const bookingNumber = `MOS-${dateStr}-${sequence.toString().padStart(4, '0')}`;
 
-    // --- Create Booking ---
+  
     const booking = await Booking.create({
       bookingNumber,
       user: session.user.id,
       service: serviceId,
-      staff: assignedStaffId, // <--- SAVING THE ASSIGNED STAFF
+      staff: assignedStaffId,
       bookingDate: new Date(bookingDate),
       timeSlot,
       vehicle,
@@ -173,29 +170,10 @@ export async function POST(request) {
       paymentStatus: 'pending',
     });
 
-    // Populate for response
+
     await booking.populate('service', 'name price duration category');
     await booking.populate('user', 'name email phone');
 
-    // // Send email notifications - MOVING THIS TO AFTER PAYMENT CONFIRMATION
-    // const emailPromises = [];
-    
-    // // Send admin notification
-    // emailPromises.push(
-    //   sendBookingNotification(booking).catch(error => {
-    //     console.error('Failed to send admin notification email:', error);
-    //   })
-    // );
-    
-    // // Send customer confirmation
-    // emailPromises.push(
-    //   sendCustomerBookingConfirmation(booking).catch(error => {
-    //     console.error('Failed to send customer confirmation email:', error);
-    //   })
-    // );
-
-    // // Wait for all emails to be sent (but don't block the response if they fail)
-    // await Promise.allSettled(emailPromises);
 
     return NextResponse.json(
       {

@@ -13,7 +13,7 @@ export async function GET() {
     const bookingCount = await Booking.countDocuments();
     const staffCount = await Staff.countDocuments();
     const serviceCount = await Service.countDocuments();
-    // Assuming all users in the User model are customers for this count
+  
     const customerCount = await User.countDocuments();
 
     const counts = {

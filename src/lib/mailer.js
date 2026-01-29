@@ -5,7 +5,7 @@ import { getCustomerBookingConfirmationEmail } from './emailTemplate';
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: process.env.EMAIL_PORT,
-  secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
+  secure: process.env.EMAIL_SECURE === 'true', 
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 export const sendBookingNotification = async (booking) => {
   const mailOptions = {
     from: process.env.EMAIL_FROM,
-    to: process.env.ADMIN_EMAIL, // Send to an admin email
+    to: process.env.ADMIN_EMAIL, 
     subject: `New Booking: ${booking.bookingNumber}`,
     html: `
       <h1>New Booking Received</h1>
@@ -44,9 +44,9 @@ export const sendBookingNotification = async (booking) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('✅ Admin notification email sent successfully');
+    console.log('Admin notification email sent successfully');
   } catch (error) {
-    console.error('❌ Error sending admin notification email:', error);
+    console.error('Error sending admin notification email:', error);
     throw error;
   }
 };
@@ -64,20 +64,20 @@ export const sendCustomerBookingConfirmation = async (booking) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Customer confirmation email sent successfully to:', booking.user.email);
+    console.log('Customer confirmation email sent successfully to:', booking.user.email);
     console.log('Message ID:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('❌ Error sending customer confirmation email:', error);
+    console.error('Error sending customer confirmation email:', error);
     throw error;
   }
 };
 
-// Generic email sender (existing function)
+
 export const sendEmail = async ({ to, subject, text, html }) => {
   try {
     const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER, // or `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM}>`
+      from: process.env.EMAIL_USER, 
       to,
       subject,
       text,

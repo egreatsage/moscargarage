@@ -6,14 +6,14 @@ import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import Payment from '@/models/Payment';
 
-// DELETE a booking permanently
+
 export async function DELETE(request, context) {
   const { id } = await context.params;
   
   try {
     const session = await getServerSession(authOptions);
     
-    // Only admins can permanently delete bookings
+    
     if (!session || session.user.role !== 'admin') {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
@@ -32,10 +32,10 @@ export async function DELETE(request, context) {
       );
     }
 
-    // Perform the hard delete
+    
     await Booking.findByIdAndDelete(id);
 
-    // Also delete any associated payment records
+   
     await Payment.deleteMany({ booking: id });
 
     return NextResponse.json({

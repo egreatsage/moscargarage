@@ -16,15 +16,15 @@ export default function StaffCalendar({ bookings }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 }); // Monday start
+  const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 }); 
 
-  // Generate the 7 days of the week
+  //
   const weekDays = [];
   for (let i = 0; i < 7; i++) {
     weekDays.push(addDays(startDate, i));
   }
 
-  // Time slots matching your backend
+  
   const timeSlots = [
     "08:00-10:00",
     "10:00-12:00",
@@ -54,7 +54,7 @@ export default function StaffCalendar({ bookings }) {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-      {/* Header */}
+  
       <div className="p-4 border-b border-gray-100 flex items-center justify-between">
         <h2 className="font-semibold text-gray-800 flex items-center gap-2">
           <CalIcon className="w-5 h-5 text-blue-600" />
@@ -70,10 +70,10 @@ export default function StaffCalendar({ bookings }) {
         </div>
       </div>
 
-      {/* Calendar Grid */}
+    
       <div className="overflow-x-auto">
         <div className="min-w-[800px]">
-          {/* Days Header */}
+      
           <div className="grid grid-cols-8 border-b border-gray-100 bg-gray-50/50">
             <div className="p-4 text-xs font-semibold text-gray-500 text-center border-r border-gray-100">
               TIME
@@ -95,15 +95,14 @@ export default function StaffCalendar({ bookings }) {
             ))}
           </div>
 
-          {/* Time Slots Rows */}
+        
           {timeSlots.map((slot) => (
             <div key={slot} className="grid grid-cols-8 border-b border-gray-100 last:border-0 h-32">
-              {/* Time Column */}
+              
               <div className="p-3 border-r border-gray-100 flex items-center justify-center bg-gray-50/30 text-xs font-medium text-gray-500">
                 {slot}
               </div>
 
-              {/* Days Columns */}
               {weekDays.map((day, i) => {
                 const booking = getBookingForSlot(day, slot);
                 

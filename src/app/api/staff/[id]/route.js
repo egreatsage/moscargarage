@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Staff from '@/models/Staff';
 
-// GET a single staff member by ID
+
 export async function GET(request, context) {
-  const { id } = await context.params; // FIX: Added 'await' for Next.js 15+ compatibility
+  const { id } = await context.params;
   try {
     await connectDB();
     const staff = await Staff.findById(id).select('-password');
@@ -19,9 +19,9 @@ export async function GET(request, context) {
   }
 }
 
-// PUT (update) a staff member by ID
+
 export async function PUT(request, context) {
-  const { id } = await context.params; // FIX: Added 'await'
+  const { id } = await context.params;
   try {
     await connectDB();
     const staff = await Staff.findById(id);
@@ -30,25 +30,22 @@ export async function PUT(request, context) {
       return NextResponse.json({ success: false, error: 'Staff not found' }, { status: 404 });
     }
 
-    // FIX: Use formData() instead of json() because frontend sends FormData
+    
     const formData = await request.formData();
     
-    // Extract values from FormData
+  
     const name = formData.get('name');
     const phone = formData.get('phone');
     const email = formData.get('email');
     const password = formData.get('password');
     const workdesignation = formData.get('workdesignation');
     const isActive = formData.get('isActive');
-    // Note: If you want to handle the 'image' file update, you would extract it here:
-    // const imageFile = formData.get('image');
-
+   
     if (name) staff.name = name;
     if (phone) staff.phone = phone;
     if (email) staff.email = email;
     if (workdesignation) staff.workdesignation = workdesignation;
     
-    // Handle boolean conversion for isActive
     if (isActive !== null && isActive !== undefined) {
         staff.isActive = isActive === 'true';
     }
@@ -73,9 +70,9 @@ export async function PUT(request, context) {
   }
 }
 
-// DELETE a staff member by ID
+
 export async function DELETE(request, context) {
-  const { id } = await context.params; // 'await' was already correct here
+  const { id } = await context.params; 
   try {
     await connectDB();
     const deletedStaff = await Staff.findByIdAndDelete(id);

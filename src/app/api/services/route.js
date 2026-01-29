@@ -23,7 +23,6 @@ export async function GET() {
   }
 }
 
-// POST a new service
 export async function POST(request) {
   try {
     await connectDB();
@@ -39,7 +38,7 @@ export async function POST(request) {
     const imageFile = formData.get('image');
     const assignedStaffJson = formData.get('assignedStaff');
 
-    // Basic validation
+   
     if (!name || !description || !price || !duration || !category) {
       return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }
@@ -56,7 +55,7 @@ export async function POST(request) {
         }
     }
 
-    // Parse assigned staff
+   
     let assignedStaff = [];
     if (assignedStaffJson) {
       try {
@@ -85,7 +84,7 @@ export async function POST(request) {
 
     await newService.save();
 
-    // Populate staff details for registered staff only (where staffId is not null)
+    
     const populatedService = await Service.findById(newService._id)
       .populate({
         path: 'assignedStaff.staffId',

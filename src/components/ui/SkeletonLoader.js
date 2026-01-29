@@ -1,4 +1,4 @@
-// src/components/ui/SkeletonLoader.js
+
 'use client';
 
 export function BookingCardSkeleton() {
@@ -6,7 +6,7 @@ export function BookingCardSkeleton() {
     <div className="bg-white rounded-xl shadow-md overflow-hidden animate-pulse">
       <div className="p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          {/* Left Section */}
+          
           <div className="flex-1 space-y-3">
             <div className="flex items-start justify-between">
               <div className="space-y-2 flex-1">
@@ -24,7 +24,7 @@ export function BookingCardSkeleton() {
             </div>
           </div>
 
-          {/* Right Section */}
+          
           <div className="flex flex-col gap-2 lg:w-48">
             <div className="h-10 bg-gray-200 rounded-lg"></div>
             <div className="h-10 bg-gray-200 rounded-lg"></div>
@@ -38,10 +38,10 @@ export function BookingCardSkeleton() {
 export function ServiceCardSkeleton() {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden animate-pulse">
-      {/* Image */}
+  
       <div className="h-48 bg-gray-200"></div>
 
-      {/* Content */}
+      
       <div className="p-6 space-y-4">
         <div className="h-6 bg-gray-200 rounded w-3/4"></div>
         <div className="space-y-2">
@@ -76,13 +76,13 @@ export function TableRowSkeleton({ columns = 7 }) {
 export function DetailsSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
-      {/* Header */}
+      
       <div className="bg-white rounded-xl shadow-md p-6">
         <div className="h-8 bg-gray-200 rounded w-1/3 mb-2"></div>
         <div className="h-4 bg-gray-200 rounded w-1/4"></div>
       </div>
 
-      {/* Content Sections */}
+      
       {[1, 2, 3].map((i) => (
         <div key={i} className="bg-white rounded-xl shadow-md p-6">
           <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>

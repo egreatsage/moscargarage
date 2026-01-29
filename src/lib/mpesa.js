@@ -1,16 +1,14 @@
-// src/lib/mpesa.js
+
 import axios from 'axios';
 
 const MPESA_BASE_URL = process.env.MPESA_ENV === 'production' 
   ? 'https://api.safaricom.co.ke' 
   : 'https://sandbox.safaricom.co.ke';
 
-// Development mode flag
+
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 
-/**
- * Get M-Pesa OAuth token
- */
+
 async function getAccessToken() {
   try {
     const auth = Buffer.from(
@@ -33,9 +31,7 @@ async function getAccessToken() {
   }
 }
 
-/**
- * Generate M-Pesa password
- */
+
 function generatePassword() {
   const timestamp = new Date()
     .toISOString()
@@ -49,13 +45,11 @@ function generatePassword() {
   return { password, timestamp };
 }
 
-/**
- * Validate callback URL configuration
- */
+
 function validateCallbackUrl() {
   const callbackUrl = process.env.NEXT_PUBLIC_APP_URL;
   
-  // In development, allow both HTTP and HTTPS
+  
   if (IS_DEVELOPMENT) {
     if (!callbackUrl) {
       console.warn('⚠️  NEXT_PUBLIC_APP_URL is not set. Using fallback for development.');
@@ -66,13 +60,13 @@ function validateCallbackUrl() {
       };
     }
     
-    // Allow both http and https in development
+    
     if (callbackUrl.startsWith('http://') || callbackUrl.startsWith('https://')) {
       return { valid: true, url: callbackUrl };
     }
   }
   
-  // In production, require HTTPS
+  
   if (!callbackUrl || !callbackUrl.startsWith('https://')) {
     return {
       valid: false,
@@ -85,14 +79,14 @@ function validateCallbackUrl() {
 
 /**
  * Initiate STK Push
- * @param {string} phoneNumber - Phone number in format 254XXXXXXXXX
- * @param {number} amount - Amount to charge
- * @param {string} accountReference - Reference for the transaction (e.g., booking number)
- * @param {string} transactionDesc - Description of the transaction
+ * @param {string} phoneNumber 
+ * @param {number} amount 
+ * @param {string} accountReference 
+ * @param {string} transactionDesc 
  */
 export async function initiateSTKPush(phoneNumber, amount, accountReference, transactionDesc) {
   try {
-    // Validate callback URL
+    
     const urlValidation = validateCallbackUrl();
     
     if (!urlValidation.valid) {
@@ -115,7 +109,7 @@ export async function initiateSTKPush(phoneNumber, amount, accountReference, tra
       Password: password,
       Timestamp: timestamp,
       TransactionType: 'CustomerPayBillOnline',
-      Amount: Math.round(amount), // Ensure amount is an integer
+      Amount: Math.round(amount), 
       PartyA: phoneNumber,
       PartyB: process.env.MPESA_SHORTCODE,
       PhoneNumber: phoneNumber,
@@ -124,7 +118,7 @@ export async function initiateSTKPush(phoneNumber, amount, accountReference, tra
       TransactionDesc: transactionDesc,
     };
 
-    console.log('📱 Initiating STK Push:', {
+    console.log('Initiating STK Push:', {
       phone: phoneNumber,
       amount: payload.Amount,
       reference: accountReference,
@@ -143,14 +137,14 @@ export async function initiateSTKPush(phoneNumber, amount, accountReference, tra
       }
     );
 
-    console.log('✅ STK Push initiated successfully:', response.data);
+    console.log('STK Push initiated successfully:', response.data);
 
     return {
       success: true,
       data: response.data,
     };
   } catch (error) {
-    console.error('❌ Error initiating STK push:', error.response?.data || error.message);
+    console.error('Error initiating STK push:', error.response?.data || error.message);
     return {
       success: false,
       error: error.response?.data?.errorMessage || 'Failed to initiate payment',
@@ -160,7 +154,7 @@ export async function initiateSTKPush(phoneNumber, amount, accountReference, tra
 
 /**
  * Query STK Push transaction status
- * @param {string} checkoutRequestID - The checkout request ID from STK push
+ * @param {string} checkoutRequestID 
  */
 export async function querySTKPushStatus(checkoutRequestID) {
   try {
@@ -200,7 +194,7 @@ export async function querySTKPushStatus(checkoutRequestID) {
 
 /**
  * Process M-Pesa callback data
- * @param {object} callbackData - The callback data from M-Pesa
+ * @param {object} callbackData 
  */
 export function processCallback(callbackData) {
   try {

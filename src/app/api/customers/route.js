@@ -4,7 +4,7 @@ import User from '@/models/User';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-// GET all customers
+
 export async function GET(request) {
   try {
     const session = await getServerSession(authOptions);

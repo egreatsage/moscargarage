@@ -43,14 +43,14 @@ const StaffSchema = new mongoose.Schema(
     },
   },
   {
-    // FIX: This one line replaces all the manual Date code that was failing
+ 
     timestamps: true, 
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
 
-// --- KEEP THIS: Password Hashing is still required for Staff ---
+
 StaffSchema.pre('save', async function() {
   if (!this.isModified('password')) {
     return;
@@ -62,9 +62,7 @@ StaffSchema.pre('save', async function() {
     throw error;
   }
 });
-// ---------------------------------------------------------------
 
-// Method to compare passwords
 StaffSchema.methods.comparePassword = async function(candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
@@ -73,12 +71,12 @@ StaffSchema.methods.comparePassword = async function(candidatePassword) {
   }
 };
 
-// Custom toJSON to ensure password is removed from responses
+
 StaffSchema.methods.toJSON = function() {
   const staff = this.toObject();
   delete staff.password;
-  delete staff.__v; // Optional: cleaner output like Service.js
-  staff.id = staff._id; // Ensure id is available
+  delete staff.__v; 
+  staff.id = staff._id; 
   return staff;
 };
 

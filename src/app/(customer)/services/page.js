@@ -14,7 +14,7 @@ async function getServices() {
 export default async function ServicesPage() {
   const services = await getServices();
 
-  // Group services by category
+ 
   const servicesByCategory = services.reduce((acc, service) => {
     if (!acc[service.category]) {
       acc[service.category] = [];
@@ -36,14 +36,14 @@ export default async function ServicesPage() {
           </p>
         </div>
 
-        {/* Services by Category */}
+       
         {Object.entries(servicesByCategory).map(([category, categoryServices]) => (
           <div key={category} className="mb-10 sm:mb-12 lg:mb-16">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 capitalize">
               {category}
             </h2>
             
-            {/* Responsive Grid */}
+           
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {categoryServices.map((service) => (
                 <div
@@ -117,7 +117,7 @@ export default async function ServicesPage() {
           </div>
         ))}
 
-        {/* No Services Message */}
+        
         {services.length === 0 && (
           <div className="text-center py-16">
             <Tag className="w-16 h-16 text-gray-400 mx-auto mb-4" />

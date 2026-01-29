@@ -1,6 +1,6 @@
 'use client';
 
-// src/app/unauthorized/page.js
+
 import Link from 'next/link';
 import { ShieldAlert, ArrowLeft, Home } from 'lucide-react';
 
@@ -9,24 +9,24 @@ export default function UnauthorizedPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full text-center">
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          {/* Icon */}
+      
           <div className="flex justify-center mb-6">
             <div className="bg-red-100 rounded-full p-6">
               <ShieldAlert className="w-16 h-16 text-red-600" />
             </div>
           </div>
 
-          {/* Title */}
+        
           <h1 className="text-3xl font-bold text-gray-900 mb-3">
             Access Denied
           </h1>
 
-          {/* Message */}
+          
           <p className="text-gray-600 mb-8">
             You don't have permission to access this page. Please contact your administrator if you believe this is an error.
           </p>
 
-          {/* Actions */}
+          
           <div className="space-y-3">
             <Link
               href="/"
@@ -45,7 +45,7 @@ export default function UnauthorizedPage() {
             </button>
           </div>
 
-          {/* Additional Info */}
+          
           <div className="mt-8 pt-6 border-t border-gray-200">
             <p className="text-sm text-gray-500">
               Error Code: <span className="font-mono font-semibold">403</span>

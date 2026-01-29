@@ -6,7 +6,7 @@ import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import mongoose from 'mongoose';
 
-// GET revenue analytics
+
 export async function GET(request) {
   try {
     const session = await getServerSession(authOptions);

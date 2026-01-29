@@ -1,10 +1,11 @@
 // src/app/(admin)/admin/bookings/page.js
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, Car, User, Loader2, AlertCircle, Search } from 'lucide-react';
+import { Calendar, Clock, Car, User, Loader2, AlertCircle, Search, Printer } from 'lucide-react';
 import BookingActions from './BookingActions';
+import { useReactToPrint } from 'react-to-print';
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState([]);
@@ -12,6 +13,11 @@ export default function AdminBookingsPage() {
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const componentRef = useRef(null);
+  
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+  });
 
   useEffect(() => {
     fetchBookings();
@@ -174,6 +180,13 @@ export default function AdminBookingsPage() {
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
           </select>
+          <button
+            onClick={handlePrint}
+            className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          >
+            <Printer className="w-5 h-5 mr-2" />
+            Print
+          </button>
         </div>
 
         {/* Error Message */}
@@ -186,7 +199,7 @@ export default function AdminBookingsPage() {
 
         {/* Bookings Table */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" ref={componentRef}>
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -208,7 +221,7 @@ export default function AdminBookingsPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider no-print">
                     Actions
                   </th>
                 </tr>
@@ -282,7 +295,7 @@ export default function AdminBookingsPage() {
                           <option value="cancelled">Cancelled</option>
                         </select>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-right no-print">
                         <BookingActions booking={booking} onAction={fetchBookings} />
                       </td>
                     </tr>
@@ -300,6 +313,26 @@ export default function AdminBookingsPage() {
             </table>
           </div>
         </div>
+
+        {/* Print Styles */}
+        <style jsx global>{`
+          @media print {
+            .no-print {
+              display: none !important;
+            }
+            body {
+              print-color-adjust: exact;
+              -webkit-print-color-adjust: exact;
+            }
+            table {
+              page-break-inside: auto;
+            }
+            tr {
+              page-break-inside: avoid;
+              page-break-after: auto;
+            }
+          }
+        `}</style>
       </div>
     </div>
   );

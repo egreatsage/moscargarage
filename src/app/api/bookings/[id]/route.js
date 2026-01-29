@@ -1,16 +1,16 @@
-// src/app/api/bookings/[id]/route.js
+
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import connectDB from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import Payment from '@/models/Payment';
-import Service from '@/models/Service'; // Ensure Service is registered
-import User from '@/models/User';       // Ensure User is registered
+import Service from '@/models/Service'; 
+import User from '@/models/User';       
 import Staff from '@/models/Staff'
 import { sendEmail } from '@/lib/mailer';
 
-// GET a single booking by ID
+
 export async function GET(request, context) {
   const { id } = await context.params;
   try {
@@ -21,7 +21,7 @@ export async function GET(request, context) {
 
     await connectDB();
 
-    // Populate service and its assignedStaff to let Admin see who else can do the job
+    
     const booking = await Booking.findById(id)
       .populate('user', 'name email phone')
       .populate({
@@ -32,13 +32,13 @@ export async function GET(request, context) {
             select: 'name'
         }
       })
-      .populate('staff', 'name email phone'); // Populate current staff details
+      .populate('staff', 'name email phone'); 
 
     if (!booking) {
       return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
 
-    // Security: Customers can only view their own bookings
+    
     if (session.user.role === 'customer' && booking.user._id.toString() !== session.user.id) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
@@ -50,7 +50,7 @@ export async function GET(request, context) {
   }
 }
 
-// PUT update a booking
+
 export async function PUT(request, context) {
   const { id } = await context.params;
   try {
@@ -79,37 +79,36 @@ export async function PUT(request, context) {
       adminNotes, 
       bookingDate, 
       timeSlot,
-      staffId // <--- Capture the new Staff ID
+      staffId 
     } = body;
 
-    // --- Admin Only Updates ---
+    
     if (session.user.role === 'admin' || session.user.role === 'staff') {
         if (status) {
             booking.status = status;
             if (status === 'completed') booking.completedAt = new Date();
-            // If cancelled, we might want to free up the staff (logic handled in double-booking check by ignoring cancelled)
+            
         }
         if (adminNotes !== undefined) booking.adminNotes = adminNotes;
         
-        // Allow Admin to change Date/Time
+        
         if (bookingDate) booking.bookingDate = new Date(bookingDate);
         if (timeSlot) booking.timeSlot = timeSlot;
 
-        // 👇👇👇 RE-ASSIGN STAFF LOGIC 👇👇👇
+        
         if (staffId && staffId !== booking.staff?.toString()) {
-            // Optional: You could add a check here to ensure the new staff is qualified
-            // But for "Admin Power", we often allow overriding constraints.
+ 
             booking.staff = staffId;
         }
     }
 
-    // --- Customer Updates (Restricted) ---
+  
     if (session.user.role === 'customer') {
-       // Customers can only update notes/issue if pending
+       
        if (booking.status === 'pending_payment' && body.issueDescription) {
            booking.issueDescription = body.issueDescription;
        }
-       // Customers cannot change status directly via PUT (use DELETE for cancel)
+      
     }
 
   if (status === 'in_progress') {
@@ -139,12 +138,12 @@ export async function PUT(request, context) {
          `
        });
     }
-    // Common Updates
+  
     if (notes !== undefined) booking.notes = notes;
 
     await booking.save();
 
-    // Re-populate for response
+  
     await booking.populate('service');
     await booking.populate('user');
     await booking.populate('staff');
@@ -156,7 +155,7 @@ export async function PUT(request, context) {
   }
 }
 
-// DELETE cancel a booking
+
 export async function DELETE(request, context) {
   const { id } = await context.params;
   
@@ -181,7 +180,7 @@ export async function DELETE(request, context) {
       );
     }
 
-    // Check permissions
+    
     const isOwner = booking.user.toString() === session.user.id;
     const isAdmin = session.user.role === 'admin';
 
@@ -192,7 +191,7 @@ export async function DELETE(request, context) {
       );
     }
 
-    // Check if booking can be cancelled
+   
     if (booking.status === 'cancelled') {
       return NextResponse.json(
         { success: false, error: 'Booking is already cancelled' },
@@ -207,17 +206,14 @@ export async function DELETE(request, context) {
       );
     }
 
-    // Apply time-based restrictions only for non-admin users
+    
     if (session.user.role !== 'admin' ||session.user.role !== 'staff') {
       const now = new Date();
       const bookingDateTime = new Date(booking.bookingDate);
       const [hours] = booking.timeSlot.split('-')[0].split(':').map(Number);
       bookingDateTime.setHours(hours, 0, 0, 0);
 
-      if (status === 'completed') {
-                booking.completedAt = new Date();
-                // TODO: Trigger Notification Function here (e.g., sendCompletionEmail(booking))
-            }
+      
 
       if (bookingDateTime < now) {
         return NextResponse.json(

@@ -1,4 +1,4 @@
-// src/components/booking/PaymentForm.js
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,11 +8,11 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [processing, setProcessing] = useState(false);
   const [checkoutRequestID, setCheckoutRequestID] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState('idle'); // idle, processing, checking, success, failed
+  const [paymentStatus, setPaymentStatus] = useState('idle'); 
   const [error, setError] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
 
-  // Poll payment status
+  
   useEffect(() => {
     if (checkoutRequestID && paymentStatus === 'checking') {
       const interval = setInterval(async () => {
@@ -28,7 +28,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
               setStatusMessage('Payment successful! Your booking is confirmed.');
               clearInterval(interval);
               
-              // Call success callback after a short delay
+              
               setTimeout(() => {
                 onSuccess(booking);
               }, 2000);
@@ -41,7 +41,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
         } catch (err) {
           console.error('Error checking payment status:', err);
         }
-      }, 3000); // Check every 3 seconds
+      }, 3000); 
 
       const timeout = setTimeout(() => {
         clearInterval(interval);
@@ -59,15 +59,15 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
   }, [checkoutRequestID, paymentStatus, onSuccess]);
 
   const formatPhoneNumber = (value) => {
-    // Remove all non-digits
+  
     let cleaned = value.replace(/\D/g, '');
     
-    // If starts with 0, replace with 254
+    
     if (cleaned.startsWith('0')) {
       cleaned = '254' + cleaned.substring(1);
     }
     
-    // If starts with +254, remove the +
+    
     if (cleaned.startsWith('+254')) {
       cleaned = cleaned.substring(1);
     }
@@ -87,12 +87,12 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
     setPaymentStatus('processing');
 
     try {
-      // Validate phone number
+    
       if (!phoneNumber || phoneNumber.length !== 12 || !phoneNumber.startsWith('254')) {
         throw new Error('Please enter a valid phone number (e.g., 254712345678)');
       }
 
-      // Initiate STK push
+    
       const response = await fetch('/api/mpesa/stk-push', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -128,13 +128,13 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
 
   return (
     <div className="space-y-6">
-      {/* Payment Amount */}
+    
       <div className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg text-white">
         <div className="text-sm font-medium mb-1">Total Amount</div>
         <div className="text-4xl font-bold">KES {amount.toLocaleString()}</div>
       </div>
 
-      {/* Payment Form */}
+      
       {paymentStatus === 'idle' && (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -184,7 +184,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
         </form>
       )}
 
-      {/* Processing Status */}
+      
       {paymentStatus === 'processing' && (
         <div className="text-center py-8">
           <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
@@ -195,7 +195,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
         </div>
       )}
 
-      {/* Checking Status */}
+      
       {paymentStatus === 'checking' && (
         <div className="text-center py-8">
           <div className="relative mb-6">
@@ -219,7 +219,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
         </div>
       )}
 
-      {/* Success Status */}
+    
       {paymentStatus === 'success' && (
         <div className="text-center py-8">
           <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
@@ -230,7 +230,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
         </div>
       )}
 
-      {/* Failed Status */}
+    
       {paymentStatus === 'failed' && (
         <div className="text-center py-8">
           <XCircle className="w-16 h-16 text-red-600 mx-auto mb-4" />
@@ -247,7 +247,7 @@ export default function PaymentForm({ bookingId, amount, onSuccess }) {
         </div>
       )}
 
-      {/* Payment Info */}
+      
       {paymentStatus === 'idle' && (
         <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
           <h4 className="font-semibold text-gray-900 mb-2">Payment Information</h4>

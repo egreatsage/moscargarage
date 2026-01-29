@@ -17,7 +17,7 @@ export async function GET(request, { params }) {
   }
 }
 
-// PUT (update) a customer by ID
+
 export async function PUT(request, { params }) {
   const { id } = params;
   try {
@@ -31,7 +31,7 @@ export async function PUT(request, { params }) {
     const body = await request.json();
     const { name, email, phone, role, isActive, vehicle, password } = body;
 
-    // Update fields
+   
     if (name) customer.name = name;
     if (email) customer.email = email;
     if (phone) customer.phone = phone;
@@ -39,7 +39,7 @@ export async function PUT(request, { params }) {
     if (isActive !== undefined) customer.isActive = isActive;
     if (password) customer.password = password; // The pre-save hook will hash it
 
-    // Handle vehicle object update
+    
     if (vehicle) {
         if (vehicle.make) customer.vehicle.make = vehicle.make;
         if (vehicle.model) customer.vehicle.model = vehicle.model;

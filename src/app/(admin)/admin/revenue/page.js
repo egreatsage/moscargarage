@@ -1,5 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
 import { 
   DollarSign, 
   TrendingUp, 
@@ -11,7 +12,8 @@ import {
   ArrowDown,
   RefreshCw,
   Filter,
-  Award
+  Award,
+  Printer
 } from 'lucide-react';
 import {
   LineChart,
@@ -30,6 +32,8 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
+import PrintableRevenueReport from './printablerevenureport/page';
+
 
 const RevenueDashboard = () => {
   const [revenueData, setRevenueData] = useState(null);
@@ -37,6 +41,9 @@ const RevenueDashboard = () => {
   const [timeframe, setTimeframe] = useState('month');
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [isPrinting, setIsPrinting] = useState(false);
+  
+  const componentRef = useRef(null);
 
   useEffect(() => {
     fetchRevenueData();
@@ -65,6 +72,30 @@ const RevenueDashboard = () => {
       setLoading(false);
     }
   };
+
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+    documentTitle: `Revenue_Report_${revenueData?.period}_${new Date().toISOString().split('T')[0]}`,
+    onBeforePrint: () => {
+      setIsPrinting(true);
+      return Promise.resolve();
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false);
+    },
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    `
+  });
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-KE', {
@@ -164,10 +195,39 @@ const RevenueDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Revenue Analytics</h1>
-          <p className="text-gray-600 mt-1">Track your business performance and insights</p>
+        {/* Header with Print Button */}
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Revenue Analytics</h1>
+            <p className="text-gray-600 mt-1">Track your business performance and insights</p>
+          </div>
+          <button
+            onClick={handlePrint}
+            disabled={isPrinting}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+          >
+            {isPrinting ? (
+              <>
+                <RefreshCw className="w-5 h-5 animate-spin" />
+                <span>Preparing...</span>
+              </>
+            ) : (
+              <>
+                <Printer className="w-5 h-5" />
+                <span>Print Report</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Hidden Printable Component */}
+        <div style={{ display: 'none' }}>
+          <PrintableRevenueReport 
+            ref={componentRef}
+            revenueData={revenueData}
+            timeframe={timeframe}
+            period={period}
+          />
         </div>
 
         {/* Filters */}
@@ -194,10 +254,10 @@ const RevenueDashboard = () => {
                 <select
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                className="px-4 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   {Array.from({ length: 12 }, (_, i) => (
-                    <option key={i + 1} value={i + 1} className="text-gray-800">
+                    <option key={i + 1} value={i + 1}>
                       {new Date(2000, i, 1).toLocaleString('default', { month: 'long' })}
                     </option>
                   ))}
@@ -205,13 +265,16 @@ const RevenueDashboard = () => {
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                  className="px-4 py-2 border text-gray-900 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <option key={i} value={new Date().getFullYear() - i} className="text-gray-900">
-                      {new Date().getFullYear() - i}
-                    </option>
-                  ))}
+                  {Array.from({ length: 5 }, (_, i) => {
+                    const year = new Date().getFullYear() - i;
+                    return (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    );
+                  })}
                 </select>
               </>
             )}
@@ -220,28 +283,26 @@ const RevenueDashboard = () => {
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-4 py-2 border text-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                {Array.from({ length: 5 }, (_, i) => (
-                  <option key={i} value={new Date().getFullYear() - i}>
-                    {new Date().getFullYear() - i}
-                  </option>
-                ))}
+                {Array.from({ length: 5 }, (_, i) => {
+                  const year = new Date().getFullYear() - i;
+                  return (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  );
+                })}
               </select>
             )}
 
             <button
               onClick={fetchRevenueData}
-              className="ml-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center gap-2"
+              className="ml-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
             </button>
-          </div>
-          
-          <div className="mt-3 text-sm text-gray-600">
-            <Calendar className="w-4 h-4 inline mr-1" />
-            Period: <span className="font-medium">{period}</span>
           </div>
         </div>
 
@@ -251,59 +312,54 @@ const RevenueDashboard = () => {
             title="Total Revenue"
             value={formatCurrency(summary.totalRevenue)}
             icon={DollarSign}
-            color="green"
-            trend={revenueGrowth && revenueGrowth.growthPercentage !== 0 ? (revenueGrowth.growthPercentage > 0 ? 'up' : 'down') : null}
+            color="blue"
+            trend={revenueGrowth?.growthPercentage >= 0 ? 'up' : 'down'}
             trendValue={revenueGrowth ? `${Math.abs(revenueGrowth.growthPercentage).toFixed(1)}%` : null}
           />
-          
           <StatCard
             title="Total Bookings"
             value={summary.totalBookings}
             icon={Calendar}
-            color="blue"
+            color="green"
           />
-          
           <StatCard
             title="Average Booking Value"
             value={formatCurrency(summary.averageBookingValue)}
             icon={TrendingUp}
             color="purple"
           />
-          
           <StatCard
-            title="Active Customers"
-            value={topCustomers.length}
-            icon={Users}
+            title="Top Service Revenue"
+            value={servicePopularity.length > 0 ? formatCurrency(servicePopularity[0].totalRevenue) : formatCurrency(0)}
+            icon={Award}
             color="orange"
           />
         </div>
 
         {/* Revenue Growth Card */}
         {revenueGrowth && (
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Revenue Growth</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg p-6 mb-6 text-white">
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Current Period</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(revenueGrowth.current)}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Previous Period</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(revenueGrowth.previous)}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Growth</p>
-                <div className="flex items-center mt-1">
-                  {revenueGrowth.growthPercentage > 0 ? (
-                    <ArrowUp className="w-5 h-5 text-green-500 mr-1" />
-                  ) : (
-                    <ArrowDown className="w-5 h-5 text-red-500 mr-1" />
-                  )}
-                  <span className={`text-2xl font-bold ${revenueGrowth.growthPercentage > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {Math.abs(revenueGrowth.growthPercentage).toFixed(1)}%
-                  </span>
+                <h3 className="text-lg font-semibold mb-2">Period-over-Period Growth</h3>
+                <div className="flex items-center gap-6">
+                  <div>
+                    <p className="text-sm opacity-90">Current Period</p>
+                    <p className="text-2xl font-bold">{formatCurrency(revenueGrowth.current)}</p>
+                  </div>
+                  <div className="text-3xl opacity-75">→</div>
+                  <div>
+                    <p className="text-sm opacity-90">Previous Period</p>
+                    <p className="text-2xl font-bold">{formatCurrency(revenueGrowth.previous)}</p>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">
+              </div>
+              <div className="text-right">
+                <p className="text-sm opacity-90">Growth</p>
+                <p className="text-3xl font-bold">
+                  {revenueGrowth.growthPercentage >= 0 ? '+' : ''}{revenueGrowth.growthPercentage.toFixed(1)}%
+                </p>
+                <p className="text-sm opacity-90">
                   {formatCurrency(Math.abs(revenueGrowth.growthAmount))}
                 </p>
               </div>
@@ -312,7 +368,7 @@ const RevenueDashboard = () => {
         )}
 
         {/* Monthly Revenue Area Chart */}
-        {timeframe === 'year' && monthlyRevenue && (
+        {timeframe !== 'week' && monthlyRevenue && monthlyRevenue.length > 0 && (
           <div className="bg-white rounded-lg shadow p-6 mb-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Monthly Revenue Trend</h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -320,7 +376,7 @@ const RevenueDashboard = () => {
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.1}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />

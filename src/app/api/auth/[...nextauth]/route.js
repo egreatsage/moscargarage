@@ -1,9 +1,9 @@
-// src/app/api/auth/[...nextauth]/route.js
+
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import connectDB from '@/lib/mongodb';
 import User from '@/models/User';
-import Staff from '@/models/Staff'; // Import Staff model
+import Staff from '@/models/Staff'; 
 import bcrypt from 'bcryptjs';
 
 export const authOptions = {
@@ -17,7 +17,7 @@ export const authOptions = {
       async authorize(credentials) {
         await connectDB();
 
-        // 1. Try to find user in USER collection (Customers/Admins)
+       
         const user = await User.findOne({ email: credentials.email }).select('+password');
         
         if (user) {
@@ -27,18 +27,18 @@ export const authOptions = {
               id: user._id.toString(),
               name: user.name,
               email: user.email,
-              role: user.role, // 'customer' or 'admin'
-              image: user.vehicle?.photo || '', // Optional
+              role: user.role, 
+              image: user.vehicle?.photo || '',
               vehicle: user.vehicle,
             };
           }
         }
 
-        // 2. If not found, try to find in STAFF collection
+        
         const staff = await Staff.findOne({ email: credentials.email }).select('+password');
         
         if (staff) {
-          // Staff model has comparePassword method, or use bcrypt directly
+          
           const isMatch = await bcrypt.compare(credentials.password, staff.password);
           
           if (isMatch) {
@@ -46,24 +46,23 @@ export const authOptions = {
               id: staff._id.toString(),
               name: staff.name,
               email: staff.email,
-              role: 'staff', // Force role to 'staff'
-              designation: staff.workdesignation, // Extra data for staff
+              role: 'staff', 
+              designation: staff.workdesignation, 
             };
           }
         }
 
-        // 3. If neither found
         throw new Error('Invalid email or password');
       },
     }),
   ],
   callbacks: {
-    // Add role and ID to the token
+   
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.role = user.role;
         token.id = user.id;
-        // If it's staff, we can save extra info
+        
         if (user.role === 'staff') {
            token.designation = user.designation;
         }
@@ -74,7 +73,7 @@ export const authOptions = {
       }
       return token;
     },
-    // Add role and ID to the session (so frontend can see it)
+    
     async session({ session, token }) {
       if (session.user) {
         session.user.role = token.role;
@@ -88,7 +87,7 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: '/login', // Keep using the same login page
+    signIn: '/login', 
   },
   session: {
     strategy: 'jwt',

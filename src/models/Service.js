@@ -1,4 +1,4 @@
-// src/models/Service.js
+
 import mongoose from 'mongoose';
 
 const ServiceSchema = new mongoose.Schema(
@@ -15,13 +15,13 @@ const ServiceSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: '', // URL from Cloudinary
+      default: '', 
     },
     price: {
       type: Number,
       required: [true, 'Please provide a price'],
     },
-    // To distinguish between "From KES 15,000" and a fixed price
+   
     priceType: {
       type: String,
       enum: ['fixed', 'starting_from'],
@@ -29,7 +29,7 @@ const ServiceSchema = new mongoose.Schema(
     },
     duration: {
       type: String,
-      required: [true, 'Please provide the approximate duration'], // e.g., "2-3 hours", "1 day"
+      required: [true, 'Please provide the approximate duration'], 
     },
     category: {
       type: String,
@@ -40,12 +40,12 @@ const ServiceSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    // Staff assignments
+   
     assignedStaff: [{
       staffId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Staff',
-        required: false, // Not required for manual entries
+        required: false, 
         default: null,
       },
       name: {
@@ -59,8 +59,8 @@ const ServiceSchema = new mongoose.Schema(
     }],
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt fields
-    // Add virtuals to include 'id'
+    timestamps: true, 
+    
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }

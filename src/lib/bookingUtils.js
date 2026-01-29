@@ -2,23 +2,23 @@
 
 /**
  * Generate available time slots for a given date
- * @param {Date} date - The date to generate slots for
- * @param {Array} existingBookings - Array of existing bookings for that date
- * @param {number} slotDuration - Duration of each slot in hours (default: 2)
- * @returns {Array} Array of available time slots
+ * @param {Date} date - 
+ * @param {Array} existingBookings - 
+ * @param {number} slotDuration 
+ * @returns {Array} 
  */
 export function generateTimeSlots(date, existingBookings = [], slotDuration = 2) {
   const slots = [];
-  const startHour = 8; // 8 AM
-  const endHour = 18; // 6 PM
+  const startHour = 8; 
+  const endHour = 18; 
   
-  // Generate all possible slots
+  // 
   for (let hour = startHour; hour < endHour; hour += slotDuration) {
     const startTime = `${hour.toString().padStart(2, '0')}:00`;
     const endTime = `${(hour + slotDuration).toString().padStart(2, '0')}:00`;
     const slotString = `${startTime}-${endTime}`;
     
-    // Check if slot is already booked
+   
     const isBooked = existingBookings.some(
       booking => booking.timeSlot === slotString && 
       ['confirmed', 'in_progress'].includes(booking.status)
@@ -36,9 +36,9 @@ export function generateTimeSlots(date, existingBookings = [], slotDuration = 2)
 }
 
 /**
- * Check if a date is valid for booking (not in the past, not too far in future)
- * @param {Date} date - The date to validate
- * @returns {Object} Validation result
+ * 
+ * @param {Date} date 
+ * @returns {Object} 
  */
 export function validateBookingDate(date) {
   const today = new Date();
@@ -47,7 +47,7 @@ export function validateBookingDate(date) {
   const bookingDate = new Date(date);
   bookingDate.setHours(0, 0, 0, 0);
   
-  // Check if date is in the past
+  
   if (bookingDate < today) {
     return {
       valid: false,

@@ -16,7 +16,7 @@ export const getEmailTemplate = (data) => {
               <tr>
                 <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
                   <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
-                    📬 New Contact Form Submission
+                    New Contact Form Submission
                   </h1>
                   <p style="margin: 10px 0 0 0; color: #e0e7ff; font-size: 14px;">
                     You've received a new message from your website
@@ -41,7 +41,7 @@ export const getEmailTemplate = (data) => {
                               <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td style="width: 30px; vertical-align: top;">
-                                    <span style="font-size: 20px;">👤</span>
+                                    <span style="font-size: 20px;"></span>
                                   </td>
                                   <td>
                                     <p style="margin: 0; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Name</p>
@@ -57,7 +57,7 @@ export const getEmailTemplate = (data) => {
                               <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td style="width: 30px; vertical-align: top;">
-                                    <span style="font-size: 20px;">📧</span>
+                                    <span style="font-size: 20px;"></span>
                                   </td>
                                   <td>
                                     <p style="margin: 0; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</p>
@@ -75,7 +75,7 @@ export const getEmailTemplate = (data) => {
                               <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td style="width: 30px; vertical-align: top;">
-                                    <span style="font-size: 20px;">📱</span>
+                                    <span style="font-size: 20px;"></span>
                                   </td>
                                   <td>
                                     <p style="margin: 0; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone Number</p>
@@ -93,7 +93,7 @@ export const getEmailTemplate = (data) => {
                               <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td style="width: 30px; vertical-align: top;">
-                                    <span style="font-size: 20px;">🕒</span>
+                                    <span style="font-size: 20px;"></span>
                                   </td>
                                   <td>
                                     <p style="margin: 0; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Received</p>
@@ -111,7 +111,7 @@ export const getEmailTemplate = (data) => {
                     <tr>
                       <td>
                         <h2 style="margin: 0 0 15px 0; color: #1f2937; font-size: 20px; font-weight: 600; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                          💬 Message
+                           Message
                         </h2>
                         <div style="background-color: #f9fafb; border-left: 4px solid #667eea; padding: 20px; border-radius: 6px;">
                           <p style="margin: 0; color: #374151; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${data.message}</p>
@@ -218,7 +218,7 @@ export const getCustomerBookingConfirmationEmail = (booking) => {
                     <tr>
                       <td style="padding-bottom: 30px;">
                         <h2 style="margin: 0 0 20px 0; color: #1f2937; font-size: 20px; font-weight: 600; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                          📋 Service Details
+                          Service Details
                         </h2>
                         
                         <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f9fafb; border-radius: 8px; overflow: hidden;">
@@ -268,7 +268,7 @@ export const getCustomerBookingConfirmationEmail = (booking) => {
                     <tr>
                       <td style="padding-bottom: 30px;">
                         <h2 style="margin: 0 0 20px 0; color: #1f2937; font-size: 20px; font-weight: 600; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                          📅 Appointment Details
+                          Appointment Details
                         </h2>
                         
                         <table width="100%" cellpadding="0" cellspacing="0">
@@ -277,7 +277,7 @@ export const getCustomerBookingConfirmationEmail = (booking) => {
                               <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td style="width: 40px; vertical-align: top;">
-                                    <span style="font-size: 24px;">📆</span>
+                                    <span style="font-size: 24px;"></span>
                                   </td>
                                   <td>
                                     <p style="margin: 0; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Date</p>
@@ -293,7 +293,7 @@ export const getCustomerBookingConfirmationEmail = (booking) => {
                               <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td style="width: 40px; vertical-align: top;">
-                                    <span style="font-size: 24px;">⏰</span>
+                                    <span style="font-size: 24px;"></span>
                                   </td>
                                   <td>
                                     <p style="margin: 0; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Time Slot</p>
@@ -311,7 +311,7 @@ export const getCustomerBookingConfirmationEmail = (booking) => {
                     <tr>
                       <td style="padding-bottom: 30px;">
                         <h2 style="margin: 0 0 20px 0; color: #1f2937; font-size: 20px; font-weight: 600; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                          🚗 Vehicle Information
+                           Vehicle Information
                         </h2>
                         
                         <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f9fafb; border-radius: 8px; padding: 20px;">
@@ -383,7 +383,7 @@ export const getCustomerBookingConfirmationEmail = (booking) => {
                       <td style="padding-bottom: 30px;">
                         <div style="background-color: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 20px;">
                           <h3 style="margin: 0 0 12px 0; color: #1e40af; font-size: 16px; font-weight: 600;">
-                            ℹ️ Important Information
+                            ℹImportant Information
                           </h3>
                           <ul style="margin: 0; padding-left: 20px; color: #1e3a8a; font-size: 14px; line-height: 1.8;">
                             <li>Please arrive 10 minutes before your scheduled time</li>

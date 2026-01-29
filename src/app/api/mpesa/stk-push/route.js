@@ -1,4 +1,4 @@
-// src/app/api/mpesa/stk-push/route.js
+
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
@@ -7,7 +7,7 @@ import Booking from '@/models/Booking';
 import Payment from '@/models/Payment';
 import { initiateSTKPush, validatePhoneNumber } from '@/lib/mpesa';
 
-// POST initiate STK push payment
+
 export async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
@@ -31,7 +31,7 @@ export async function POST(request) {
       );
     }
 
-    // Validate phone number
+    
     const phoneValidation = validatePhoneNumber(phoneNumber);
     if (!phoneValidation.valid) {
       return NextResponse.json(
@@ -40,7 +40,7 @@ export async function POST(request) {
       );
     }
 
-    // Get booking
+  
     const booking = await Booking.findById(bookingId).populate('service', 'name');
 
     if (!booking) {
@@ -50,7 +50,7 @@ export async function POST(request) {
       );
     }
 
-    // Check if user owns this booking
+    
     if (booking.user.toString() !== session.user.id) {
       return NextResponse.json(
         { success: false, error: 'Forbidden' },
@@ -58,7 +58,7 @@ export async function POST(request) {
       );
     }
 
-    // Check if booking is in correct status
+    
     if (booking.status !== 'pending_payment') {
       return NextResponse.json(
         { success: false, error: 'Booking is not pending payment' },
@@ -66,7 +66,7 @@ export async function POST(request) {
       );
     }
 
-    // Check if payment already exists and is processing
+    
     const existingPayment = await Payment.findOne({
       booking: bookingId,
       status: { $in: ['pending', 'processing'] },
@@ -79,7 +79,7 @@ export async function POST(request) {
       );
     }
 
-    // Initiate STK push
+   
     const stkResult = await initiateSTKPush(
       phoneValidation.formatted,
       booking.totalAmount,
@@ -94,7 +94,7 @@ export async function POST(request) {
       );
     }
 
-    // Create payment record
+    
     const payment = await Payment.create({
       booking: bookingId,
       user: session.user.id,

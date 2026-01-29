@@ -1,4 +1,4 @@
-// src/components/booking/VehicleForm.js
+
 'use client';
 
 import { Car, Calendar, FileText } from 'lucide-react';
@@ -23,7 +23,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
 
   return (
     <div className="space-y-6">
-      {/* Vehicle Information */}
+
       <div>
         <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-4">
           <Car className="w-5 h-5 mr-2" />
@@ -31,7 +31,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Make */}
+          
           <div>
             <label htmlFor="make" className="block text-sm font-medium text-gray-700 mb-2">
               Make <span className="text-red-500">*</span>
@@ -47,7 +47,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
             />
           </div>
 
-          {/* Model */}
+          
           <div>
             <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-2">
               Model <span className="text-red-500">*</span>
@@ -63,7 +63,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
             />
           </div>
 
-          {/* Year */}
+          
           <div>
             <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-2">
               Year <span className="text-red-500">*</span>
@@ -84,7 +84,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
             </select>
           </div>
 
-          {/* Registration Number */}
+      
           <div>
             <label htmlFor="registration" className="block text-sm font-medium text-gray-700 mb-2">
               Registration Number <span className="text-red-500">*</span>
@@ -100,7 +100,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
             />
           </div>
 
-          {/* Mileage (Optional) */}
+          
           <div>
             <label htmlFor="mileage" className="block text-sm font-medium text-gray-700 mb-2">
               Mileage (km) <span className="text-gray-400 text-xs">(Optional)</span>
@@ -115,7 +115,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
             />
           </div>
 
-          {/* Color (Optional) */}
+      
           <div>
             <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-2">
               Color <span className="text-gray-400 text-xs">(Optional)</span>
@@ -132,7 +132,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
         </div>
       </div>
 
-      {/* Issue Description */}
+  
       <div>
         <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-4">
           <FileText className="w-5 h-5 mr-2" />
@@ -158,7 +158,7 @@ export default function VehicleForm({ vehicle, issueDescription, onChange }) {
         </div>
       </div>
 
-      {/* Summary Card */}
+    
       {vehicle.make && vehicle.model && vehicle.year && vehicle.registration && (
         <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
           <h4 className="font-semibold text-gray-900 mb-2">Vehicle Summary</h4>

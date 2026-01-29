@@ -35,7 +35,7 @@ export default function Dashboard() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Bookings Link */}
+         
           <Link 
             href="/bookings" 
             className="group bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:border-orange-200 transition-all duration-300"
@@ -59,7 +59,7 @@ export default function Dashboard() {
             <p className="text-slate-600 text-sm">Update your personal details, contact info, and vehicle data.</p>
           </Link>
 
-          {/* Quick Action: New Booking */}
+          
           <Link 
             href="/services" 
             className="group bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:border-orange-200 transition-all duration-300"

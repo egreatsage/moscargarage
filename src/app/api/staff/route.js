@@ -5,7 +5,7 @@ import { uploadToCloudinary } from '@/lib/cloudinary';
 import Staff from '@/models/Staff';
 import Service from '@/models/Service';
 
-// GET all services
+
 export async function GET() {
   try {
     await connectDB();
@@ -19,7 +19,7 @@ export async function GET() {
   }
 }
 
-// POST a new staff member
+
 export async function POST(request) {
   try {
     await connectDB();
@@ -33,7 +33,7 @@ export async function POST(request) {
     const isActive = formData.get('isActive');
     const imageFile = formData.get('image');
 
-    // Basic validation
+  
     if (!name || !email || !phone || !password || !workdesignation) {
       return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }

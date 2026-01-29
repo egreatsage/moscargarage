@@ -1,4 +1,4 @@
-// src/models/Payment.js
+
 import mongoose from 'mongoose';
 
 const PaymentSchema = new mongoose.Schema(
@@ -73,12 +73,12 @@ const PaymentSchema = new mongoose.Schema(
   }
 );
 
-// Virtual for payment 'id'
+
 PaymentSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-// Index for faster queries
+
 PaymentSchema.index({ booking: 1 });
 PaymentSchema.index({ user: 1, createdAt: -1 });
 PaymentSchema.index({ mpesaReceiptNumber: 1 });

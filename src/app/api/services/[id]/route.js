@@ -6,7 +6,7 @@ import Service from '@/models/Service';
 import Staff from '@/models/Staff';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 
-// GET a single service by ID
+
 export async function GET(request, context) {
   const { id } = await context.params;
   try {
@@ -27,7 +27,7 @@ export async function GET(request, context) {
   }
 }
 
-// PUT (update) a service by ID
+
 export async function PUT(request, context) {
   const { id } = await context.params;
   try {
@@ -49,7 +49,7 @@ export async function PUT(request, context) {
     const imageFile = formData.get('image');
     const assignedStaffJson = formData.get('assignedStaff');
 
-    // Update fields
+  
     if (name) service.name = name;
     if (description) service.description = description;
     if (price) service.price = Number(price);
@@ -58,12 +58,12 @@ export async function PUT(request, context) {
     if (category) service.category = category;
     if (isActive) service.isActive = isActive === 'true';
 
-    // Handle image upload
+    
     if (imageFile) {
         try {
             const buffer = Buffer.from(await imageFile.arrayBuffer());
             const result = await uploadToCloudinary(buffer, 'moscar/services');
-            // In a real app, you might want to delete the old image from Cloudinary here
+            
             service.image = result.secure_url;
         } catch (uploadError) {
             console.error('Cloudinary upload failed:', uploadError);
@@ -71,7 +71,7 @@ export async function PUT(request, context) {
         }
     }
 
-    // Update assigned staff
+
     if (assignedStaffJson) {
       try {
         const parsedStaff = JSON.parse(assignedStaffJson);
@@ -87,7 +87,7 @@ export async function PUT(request, context) {
 
     await service.save();
 
-    // Populate staff details for registered staff only
+    
     const populatedService = await Service.findById(service._id)
       .populate({
         path: 'assignedStaff.staffId',
@@ -105,7 +105,7 @@ export async function PUT(request, context) {
   }
 }
 
-// DELETE a service by ID
+
 export async function DELETE(request, context) {
   const { id } = await context.params;
   try {
@@ -116,7 +116,7 @@ export async function DELETE(request, context) {
       return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
     }
     
-    // In a real app, you should delete the associated image from Cloudinary here
+   
 
     return NextResponse.json({ success: true, data: {} });
   } catch (error) {

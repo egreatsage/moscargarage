@@ -41,7 +41,7 @@ const features = [
 
 async function getActiveServices() {
   await connectDB();
-  // Fetch only active services and sort them by category, then name
+  
   const services = await Service.find({ isActive: true }).sort({ category: 1, name: 1 }).lean();
   return JSON.parse(JSON.stringify(services));
 }
@@ -51,7 +51,7 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-slate-100">
-      {/* Hero Section */}
+   
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-orange-900 to-slate-800 text-white">
        
         
@@ -59,7 +59,7 @@ export default async function HomePage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 px-4 py-2 rounded-full mb-6 backdrop-blur-sm">
               <Car className="w-4 h-4" />
-              <span className="text-sm font-medium">Professional Auto Care Since 2023</span>
+              <span className="text-sm font-medium">Professional Auto Care Since 2013</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
@@ -292,7 +292,7 @@ export default async function HomePage() {
                   <Phone className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-slate-900 mb-2">Phone</h3>
-                <p className="text-slate-600">+254 712 345 678</p>
+                <p className="text-slate-600">+254758891081</p>
               </div>
               
               <div className="bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-lg transition-shadow">
@@ -352,7 +352,7 @@ export default async function HomePage() {
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  <span>+254 712 345 678</span>
+                  <span>+254758891081</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />

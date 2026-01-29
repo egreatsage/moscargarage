@@ -44,17 +44,11 @@ export async function POST(request) {
 
     await connectDB();
 
-    // --- Check for existing user ---
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return NextResponse.json({ error: 'A user with this email already exists' }, { status: 409 });
     }
-    // const existingPhone = await User.findOne({ phone });
-    // if (existingPhone) {
-    //   return NextResponse.json({ error: 'A user with this phone number already exists' }, { status: 409 });
-    // }
-    
-    // --- File Uploads to Cloudinary ---
+
     let profilePictureUrl = '';
     if (profilePictureFile) {
       const buffer = Buffer.from(await profilePictureFile.arrayBuffer());
@@ -89,7 +83,7 @@ export async function POST(request) {
     return NextResponse.json(
       {
         success: true,
-        // message: 'Account created successfully! Please login.',
+        
         user: {
           id: newUser._id,
           name: newUser.name,

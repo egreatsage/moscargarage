@@ -100,7 +100,7 @@ export default async function ProfilePage() {
         <div className="my-6 border-t border-slate-200 flex justify-between items-center">
 
            <Link href="/dashboard" className="inline-flex items-center text-lg text-orange-600 hover:text-orange-800 font-bold py-2">
-            &larr; View yuur Dashboard
+            &larr; View your Dashboard
            </Link>
             <Link href='/contact' className="inline-flex items-center text-lg text-orange-600 hover:text-orange-800 font-bold py-2">
             Contact Us for Support &rarr;

@@ -1,4 +1,4 @@
-// src/app/(customer)/contact/page.js
+
 'use client';
 
 import { useState } from 'react';

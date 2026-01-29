@@ -48,6 +48,9 @@ export default async function AdminLayout({ children }) {
               <Link href="/admin/staff" className="hover:text-gray-300">
                 My Staff
               </Link>
+              <Link href="/admin/users" className="hover:text-gray-300">
+              Users
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}

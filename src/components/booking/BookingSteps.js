@@ -1,4 +1,4 @@
-// src/components/booking/BookingSteps.js
+
 'use client';
 
 import { Check } from 'lucide-react';
@@ -22,7 +22,7 @@ export default function BookingSteps({ currentStep }) {
               stepIdx !== steps.length - 1 ? 'pr-8 sm:pr-20 flex-1' : ''
             }`}
           >
-            {/* Connector Line */}
+            
             {stepIdx !== steps.length - 1 && (
               <div
                 className="absolute top-4 left-4 -ml-px mt-0.5 h-0.5 w-full"
@@ -36,7 +36,7 @@ export default function BookingSteps({ currentStep }) {
               </div>
             )}
 
-            {/* Step Circle */}
+            
             <div className="relative flex items-start group">
               <span className="flex items-center">
                 <span
@@ -60,7 +60,7 @@ export default function BookingSteps({ currentStep }) {
                 </span>
               </span>
               
-              {/* Step Label */}
+              
               <span className="ml-3 flex min-w-0 flex-col">
                 <span
                   className={`text-sm font-semibold ${

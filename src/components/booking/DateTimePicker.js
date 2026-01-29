@@ -1,4 +1,4 @@
-// src/components/booking/DateTimePicker.js
+
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -10,7 +10,6 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Generate next 90 days (excluding weekends)
   useEffect(() => {
     const dates = [];
     const today = new Date();
@@ -21,7 +20,7 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
       currentDate.setDate(currentDate.getDate() + 1);
       const dayOfWeek = currentDate.getDay();
       
-      // Skip weekends (0 = Sunday, 6 = Saturday)
+    
       if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         dates.push(new Date(currentDate));
         daysAdded++;
@@ -53,7 +52,7 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
     }
   }, [selectedServiceId]);
 
-  // Fetch available time slots when date is selected
+  
   useEffect(() => {
     if (selectedDate && selectedServiceId) {
       fetchTimeSlots(selectedDate);
@@ -89,7 +88,7 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
 
   return (
     <div className="space-y-6 text-gray-800">
-      {/* Date Selection */}
+  
       <div>
         <label className="flex items-center text-sm font-semibold text-gray-700 mb-3">
           <Calendar className="w-4 h-4 mr-2" />
@@ -126,7 +125,7 @@ export default function DateTimePicker({ onSelect, selectedDate, selectedTime, s
         </div>
       </div>
 
-      {/* Time Slot Selection */}
+    
       {selectedDate && (
         <div>
           <label className="flex items-center text-sm font-semibold text-gray-700 mb-3">
