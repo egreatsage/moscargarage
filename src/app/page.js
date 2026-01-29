@@ -324,7 +324,7 @@ export default async function HomePage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-orange-100 text-orange-600 rounded-xl mb-4">
                   <MapPin className="w-6 h-6" />
                 </div>
-                <h3 className="font-semibold text-slate-900 mb-2">Location</h3>
+                <h3 className="font-semibold text-slate-900 mb-2">Located</h3>
                 <p className="text-slate-600">Bungoma, Kenya</p>
               </div>
             </div>

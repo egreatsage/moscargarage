@@ -42,7 +42,7 @@ export default function ServicesPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row gap-3 items-start justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Manage Services</h1>
             <p className="text-sm text-gray-600 mt-1">Add, edit, or remove services offered by the garage.</p>
@@ -50,7 +50,7 @@ export default function ServicesPage() {
           <div className="flex items-center gap-4">
             <Link
               href="/admin/services/new"
-              className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
             >
               <PlusCircle className="w-5 h-5" />
               New Service

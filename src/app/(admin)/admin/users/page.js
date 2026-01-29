@@ -46,7 +46,7 @@ const UsersPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-800">System Users</h1>
           <p className="text-gray-600 mt-1">Manage Admins and Customers</p>
